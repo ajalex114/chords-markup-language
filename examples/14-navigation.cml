@@ -3,7 +3,7 @@ title "Navigation"
 key G
 
 section Verse
-%bookmark A
+%marker A
 | G | C | G | D |
 %goto-end
 | G | D |

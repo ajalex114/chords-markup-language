@@ -1071,11 +1071,11 @@ Common Western navigation constructs and their intended CML spelling:
 
 | Construct | Plain-English meaning | Token | Alias token | Role |
 |-----------|-----------------------|-------|-------------|------|
-| Segno     | "Bookmark: come back here later" (the sign 𝄋) | `%segno` | `%bookmark` | A named target. |
+| Segno     | "Marker: come back here later" (the sign 𝄋) | `%segno` | `%marker` | A named target. |
 | Coda      | "The ending section, played only at the end" (the sign 𝆌) | `%coda` | `%ending` | A named target. |
 | To Coda   | "Skip ahead to the ending section" | `%to-coda` | `%goto-end` | Jump to the coda on the final pass. |
 | Da Capo   | "Go back to the very beginning" (D.C.) | `%dc` | `%goto-start` | Return to the beginning. |
-| Dal Segno | "Go back to the bookmark" (D.S.) | `%ds` | `%goto` | Return to the most recent `%segno`. |
+| Dal Segno | "Go back to the marker" (D.S.) | `%ds` | `%goto` | Return to the most recent `%segno`. |
 | Fine      | "The song ends here" | `%fine` | `%end` | Marks the end point for a D.C./D.S. al Fine. |
 
 A token and its alias are identical in meaning. A parser **MUST** accept both forms
@@ -1108,7 +1108,7 @@ The same song written with the alias tokens. The meaning is identical:
 
 ```cml
 section Verse
-%bookmark A
+%marker A
 | G | C | G | D |
 %goto-end
 | G | D |
