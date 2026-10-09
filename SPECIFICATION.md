@@ -843,8 +843,8 @@ These are matched case-insensitively ([Section 6.5](#65-case-sensitivity)):
 ### 11.2 Custom Sections
 
 Authors and tools **MAY** define **custom section names** beyond the core
-vocabulary (e.g. `Interlude`, `Vamp`, `Tag`, `Refrain`, `Coda Section`,
-`Turnaround`). A custom name is any valid section name not in the core
+vocabulary (e.g. `Interlude`, `Vamp`, `Tag`, `Refrain`, `"Coda Section"`,
+`Turnaround`, `Pallavi`, `"Anu Pallavi"`, `Charanam`). A custom name is any valid section name not in the core
 vocabulary. Processors **MUST** accept custom sections, record their `type` as
 the author-provided (normalized) name, and mark them as non-core (e.g. a
 `core: false` flag in the AST).
