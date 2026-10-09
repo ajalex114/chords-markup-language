@@ -1,0 +1,10 @@
+title "Repeat Demo"
+key G
+
+section Verse
+:|| G | Em | C | D |
+   [1] G | D |
+   [2] G | C ||: x2
+
+section Chorus
+:|| C | G | D | G ||: x4

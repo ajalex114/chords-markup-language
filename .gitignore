@@ -1,0 +1,14 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+*.swp
+.idea/
+.vscode/
+
+# Build / tooling output (for future parser/tooling work)
+node_modules/
+dist/
+build/
+*.log

@@ -1,0 +1,13 @@
+title "Amazing Grace"
+artist "Traditional"
+composer "John Newton"
+key G
+tempo 72
+time_signature 3/4
+copyright "Public Domain"
+
+section Verse
+| G | G7 | C | G |
+| G | Em | D | D7 |
+| G | G7 | C | G |
+| G | D | G | G |

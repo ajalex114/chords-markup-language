@@ -1,0 +1,10 @@
+title "Simple Song"
+key C
+
+section Verse
+| C | Am | F | G |
+| C | Am | F | G |
+
+section Chorus
+| F | C | G | C |
+| F | C | G | C |
