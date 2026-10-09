@@ -753,9 +753,41 @@ ending marker or the repeat close `:||`.
 
 An ending MAY list multiple applicable passes with a comma or range:
 
+Example A: a three-pass repeat where the first ending covers passes 1 and 2,
+and the second covers pass 3:
+
 ```cml
-   [1,2] ... | ...
-   [1-3]  ... | ...
+section Verse
+||: G | C | G | D |
+   [1,2] G | D |
+   [3] G | C :|| x3
+```
+
+Expanded Arrangement (3 passes):
+
+```
+Pass 1: G | C | G | D | G | D |
+Pass 2: G | C | G | D | G | D |
+Pass 3: G | C | G | D | G | C |
+```
+
+Example B: a four-pass repeat where the first ending covers passes 1 through 3,
+and the second covers pass 4:
+
+```cml
+section Chorus
+||: C | F | G | C |
+   [1-3] G | G |
+   [4] G | C :|| x4
+```
+
+Expanded Arrangement (4 passes):
+
+```
+Pass 1: C | F | G | C | G | G |
+Pass 2: C | F | G | C | G | G |
+Pass 3: C | F | G | C | G | G |
+Pass 4: C | F | G | C | G | C |
 ```
 
 `[1,2]` applies on passes 1 and 2; `[1-3]` applies on passes 1 through 3.
