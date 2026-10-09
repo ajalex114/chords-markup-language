@@ -49,6 +49,7 @@ software that presents CML (or its AST) to an end user.
 20. [Examples](#20-examples)
 21. [Versioning Strategy](#21-versioning-strategy)
 22. [Future Roadmap](#22-future-roadmap)
+- [Appendix A. Terminology and Synonyms](#appendix-a-terminology-and-synonyms)
 
 ---
 
@@ -1692,4 +1693,92 @@ songs with mid-piece modulations and metric changes.
 
 ---
 
+## Appendix A. Terminology and Synonyms
+
+Musicians use different terms for the same concept, and some terms differ by
+convention or by region. This appendix lists the equivalent terms that CML
+accepts or recognizes, and states which term the specification uses. Every
+term in the "Equivalent terms" column has the same meaning as the canonical
+term in the first column.
+
+### A.1 Structural Terms
+
+| Canonical term (CML) | Equivalent terms | CML treatment |
+|----------------------|------------------|---------------|
+| Measure              | Bar              | Synonyms. The `\|` character is the bar line that delimits a measure (§7.1). |
+| Bar line             | Barline          | Same concept. CML uses "bar line" for the `\|` character. |
+| Meter                | Time signature   | Synonyms. The metadata key is `time_signature` (§5.5). |
+| Repeat               | Repeat sign, Repeat bar | Same concept. Delimited by `:\|\|` and `\|\|:` (§9). |
+| Alternate ending     | Volta, 1st/2nd ending | Same concept. Written as `[N]` (§10). |
+| Pickup (anacrusis)   | Anacrusis, Upbeat | Partial bar at the start of a phrase. Pickup bars are permitted (§13.4). |
+| Section              | Part                | Named region of the song body (§6). |
+| Lyrics               | Words, Text         | Optional text aligned to measures (§12). |
+
+### A.2 Metadata Terms
+
+| Canonical term (CML) | Equivalent terms | CML treatment |
+|----------------------|------------------|---------------|
+| `key`                | `scale`          | Synonyms. `scale` is normalized to `key` (§5.4.1). |
+| Tonic                | Key root, Tonal center | The root note of the key, such as `G` in `key G` (§5.4). |
+| `tempo`              | BPM, Beats per minute | `tempo` is the integer BPM value (§5.3). |
+| `capo`               | Capo position        | Fret number of the capo (§5.3). |
+
+### A.3 Chord Terms
+
+| Canonical term (CML) | Equivalent terms | CML treatment |
+|----------------------|------------------|---------------|
+| Quality              | Chord type, Chord extension | The quality string after the root (§8.4). |
+| Minor (`m`)          | `-` (e.g. `C-7`)  | `-` is a valid quality character (§8.4), but CML uses `m` as the canonical form. |
+| Major seventh        | `M7`              | Canonical form is `maj7` (§8.4). `M7` is accepted as a quality string. `Δ` is not accepted in v0.1. |
+| Half-diminished      | `ø`, `ø7`         | `m7b5` is canonical. `ø` is accepted as a quality character (§8.4). |
+| Diminished           | `°`               | `dim` is canonical. `°` is accepted as a quality character (§8.4). |
+| Sharp                | `#`               | `#` is the only sharp character in v0.1 (§8.3). |
+| Flat                 | `b`               | `b` is the only flat character in v0.1 (§8.3). |
+| Slash chord          | Bass chord, Inversion | Chord with a bass note after `/` (§8.5). |
+| No chord             | `N.C.`, `NC`      | Both are recognized (§8.6). |
+| Root                 | Chord letter, Chord name | Letter `A` through `G` (§8.2). |
+
+### A.4 Rhythm Terms
+
+| Canonical term (CML) | Equivalent terms | CML treatment |
+|----------------------|------------------|---------------|
+| Beat                 | Count, Pulse     | The unit of duration in explicit duration syntax (§13.2). |
+| Equal division       | Even spacing     | Default chord timing in a measure (§13.1). |
+
+### A.5 Song Form Terms
+
+| Canonical term (CML) | Equivalent terms | CML treatment |
+|----------------------|------------------|---------------|
+| `PreChorus`          | Pre-chorus, Prechorus, Pre chorus | All recognized (§11.1). Quoted form for spaces. |
+| `Solo`               | Instrumental     | Both recognized as the `Solo` type (§11.1). |
+| `Outro`              | Ending (section) | Recognized as the `Outro` type (§11.1). "Ending" in this sense is a section name. It does not refer to an alternate ending (§10). |
+| Custom section       | Tag, Vamp, Interlude | Accepted as custom section names (§11.2). |
+
+### A.6 Navigation Terms
+
+| Canonical term (CML) | Equivalent terms | CML treatment |
+|----------------------|------------------|---------------|
+| Coda                 | Tail             | Reserved navigation marker (§14). |
+| Segno                | Sign             | Reserved navigation marker (§14). |
+| D.C. (Da Capo)       | Da Capo, Return to top | Reserved navigation marker `%dc` (§14). |
+| D.S. (Dal Segno)     | Dal Segno        | Reserved navigation marker `%ds` (§14). |
+| Fine                 | End              | Reserved navigation marker `%fine` (§14). |
+
+### A.7 Notes on Overloaded Terms
+
+Some terms have more than one meaning in CML. Implementers **MUST** use the
+meaning given by the context in which the term appears:
+
+- **`%`** is the navigation sigil (§14) and also the repeat-bar glyph used in
+  rendering (§19.1). The glyph is a display choice and is not part of the
+  syntax.
+- **"Ending"** is the alternate ending (§10) and is also an alias for the
+  `Outro` section (§11.1). Within a `section` declaration, `Ending` means
+  `Outro`. Within a repeat group, `[N]` markers are alternate endings.
+- **"Repeat"** names the repeat construct (§9) and the repeat count (`xN`).
+  The repeat count is not a separate construct.
+
+---
+
 *End of Chords Markup Language (CML) Specification, Version 0.1 Draft.*
+
