@@ -766,9 +766,9 @@ section Verse
 Expanded Arrangement (3 passes):
 
 ```
-Pass 1: G | C | G | D | G | D |
-Pass 2: G | C | G | D | G | D |
-Pass 3: G | C | G | D | G | C |
+Pass 1: || G | C | G | D | G | D ||
+Pass 2: || G | C | G | D | G | D ||
+Pass 3: || G | C | G | D | G | C ||
 ```
 
 Example B: a four-pass repeat where the first ending covers passes 1 through 3,
@@ -784,10 +784,10 @@ section Chorus
 Expanded Arrangement (4 passes):
 
 ```
-Pass 1: C | F | G | C | G | G |
-Pass 2: C | F | G | C | G | G |
-Pass 3: C | F | G | C | G | G |
-Pass 4: C | F | G | C | G | C |
+Pass 1: || C | F | G | C | G | G ||
+Pass 2: || C | F | G | C | G | G ||
+Pass 3: || C | F | G | C | G | G ||
+Pass 4: || C | F | G | C | G | C ||
 ```
 
 `[1,2]` applies on passes 1 and 2; `[1-3]` applies on passes 1 through 3.
