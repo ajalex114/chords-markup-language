@@ -907,7 +907,7 @@ Lyrics are attached to individual chords inline using a quoted string:
 **Cons:** clutters the measure line; harms the "pure structure" readability that
 is CML's main advantage; hard to read a long verse.
 
-### 12.4 Option C — Separate `lyrics` Block Per Section
+### 12.4 Option C — Separate `lyrics` Block Per Section (considered, not adopted)
 
 Each section MAY carry a dedicated `lyrics` block whose lines correspond, in
 order, to the measure lines of the section. Alignment is by **measure index**,
@@ -950,41 +950,41 @@ the measures (a validation warning can catch mismatches).
 
 ### 12.6 Recommended Canonical Approach
 
-**CML adopts Option C (the per-section `lyrics` block) as the canonical lyric
-syntax for v0.1.** It best preserves the measure-first, structure-first design,
-keeps lyrics obviously optional, parses trivially (split on `|`), and is robust
-to editing.
+**CML adopts Option A (the `>` lyric line) as the canonical lyric syntax for
+v0.1.** Lyrics sit directly under the measures they annotate, need no extra block
+or keyword, and stay obviously optional: a document with no `>` lines is a pure
+chord chart.
 
 Rules for the canonical form:
 
-1. A `lyrics` block is introduced by the keyword `lyrics` on its own line,
-   inside a section, after the measure line(s) it annotates.
-2. Each lyric line is either a `|`-delimited sequence of **cells**, or
-   **free text** with no bars. For cell lines, the *k*-th cell aligns to the
-   *k*-th measure of the corresponding measure line. A free-text line is one
-   unaligned lyric string for the measure line(s) it annotates.
-3. A cell MAY be empty (an unsung bar). Leading/trailing whitespace in a cell is
-   trimmed.
-4. For cell lines, the number of cells **SHOULD** equal the number of measures it
-   annotates; a mismatch **SHOULD** yield a warning, not a fatal error. Free-text
-   lines are not checked against measure counts.
-5. Hyphens within a word (`A-ma-zing`) denote syllable breaks for renderers that
+1. A lyric line begins with `>` (optionally preceded by spaces) and applies to the
+   nearest preceding measure line in the same section. A `>` line with no
+   preceding measure line **MUST** be reported as an error.
+2. Every lyric line needs its own `>`. Consecutive `>` lines stack under the same
+   measure line, for example for multiple verses.
+3. If the text after `>` contains a `|`, it is a **cell line**. The *k*-th cell
+   aligns to the *k*-th measure of the measure line. A leading and/or trailing `|`
+   MAY be omitted. An empty cell (`| |`) is an unsung measure.
+4. Otherwise the text is **free text**: one unaligned lyric string for the measure
+   line above it.
+5. For cell lines, the number of cells **SHOULD** equal the number of measures it
+   annotates; a mismatch **SHOULD** yield a warning (V12), not a fatal error.
+   Free-text lines are not checked against measure counts.
+6. Hyphens within a word (`A-ma-zing`) denote syllable breaks for renderers that
    do syllabic layout; renderers that do not **SHOULD** display hyphens as
    written or join them per house style.
 
 Per-chord precision (Option B) is **reserved** as an OPTIONAL future extension
-for tools that need karaoke-grade alignment; it does not replace Option C.
+for tools that need karaoke-grade alignment; it does not replace Option A.
 
 ### 12.7 Example
 
 ```cml
 section Verse
 | G | G7 | C | G |
-lyrics
-| A-ma-zing | grace, how | sweet the | sound |
+> A-ma-zing | grace, how | sweet the | sound |
 | G | Em | D |
-lyrics
-| that saved | a wretch like | me |
+> that saved | a wretch like | me |
 ```
 
 ---
@@ -1228,7 +1228,7 @@ SectionLabel   = Integer | QuotedString | Identifier ;
 
 Element        = MeasureLine
                | RepeatGroup
-               | LyricsBlock
+               | LyricLine
                | NavigationLine        (* reserved; see Section 14 *)
                | BlankOrComment ;
 ```
@@ -1296,12 +1296,7 @@ MeasureSeqInline = { OptSpaces [ ChordList ] OptSpaces "|" } ;
 ### 16.8 Lyrics Rules
 
 ```ebnf
-LyricsBlock    = OptSpaces "lyrics" OptSpaces [ Comment ] Newline
-                 LyricLine { LyricLine } ;
-
-LyricLine      = OptSpaces ( "|" LyricCellSeq | LyricText ) OptSpaces Newline ;
-LyricCellSeq   = LyricCell "|" { LyricCell "|" } ;
-LyricCell      = { ? any character except "|" and newline ? } ;
+LyricLine      = OptSpaces ">" OptSpaces LyricText OptSpaces Newline ;
 LyricText      = { ? any character except newline ? } ;
 ```
 
@@ -1548,8 +1543,9 @@ MAY vary.
 
 ### 19.5 Lyrics
 
-- When a `lyrics` block is present, render each cell beneath its aligned
-  measure.
+- When lyric lines are present, render each cell line's cells beneath their
+  aligned measures, and render free-text lines beneath the measure line they
+  follow.
 - Respect syllable hyphens for syllabic layout where supported; otherwise render
   hyphens as written.
 - When no lyrics are present, render a pure chord chart with no empty lyric rows.
@@ -1632,17 +1628,13 @@ time_signature 3/4
 
 section Verse
 | G | G7 | C | G |
-lyrics
-| A-ma-zing | grace, how | sweet the | sound |
+> A-ma-zing | grace, how | sweet the | sound |
 | G | Em | D |
-lyrics
-| that saved | a wretch like | me |
+> that saved | a wretch like | me |
 | G | G7 | C | G |
-lyrics
-| I once was | lost, but | now am | found |
+> I once was | lost, but | now am | found |
 | G | D | G |
-lyrics
-| was blind, but | now I | see |
+> was blind, but | now I | see |
 ```
 
 ---
@@ -1712,8 +1704,8 @@ riffs and intros where exact fingering matters.
 
 ### 22.5 Multiple Lyric Languages
 
-Allow several `lyrics` blocks per section, each tagged with a language
-(`lyrics en`, `lyrics es`), for multilingual songbooks and worship contexts.
+Allow lyric lines to carry a language tag (for example a code after `>`), for
+multilingual songbooks and worship contexts. The tag syntax is to be decided.
 
 ### 22.6 MIDI Integration
 
