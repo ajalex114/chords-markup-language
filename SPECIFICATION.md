@@ -149,7 +149,7 @@ Musical structure in CML is **explicit and first-class**, never implied by
 layout or whitespace:
 
 - **Sections** are declared, not inferred from blank lines.
-- **Repeats** are delimited constructs (`:||` … `||:`) with an optional explicit
+- **Repeats** are delimited constructs (`||:` … `:||`) with an optional explicit
   repeat count, not an instruction written in prose like "repeat 2x".
 - **Alternate endings** are numbered, bracketed structures.
 - **Navigation** (coda, segno, D.C., D.S., Fine) is reserved for first-class
@@ -532,7 +532,7 @@ authors yet:
 - `||` — a plain double bar / section divider.
 - `|.` or `||.` — final bar line.
 
-Repeat bar lines (`:||`, `||:`) are specified in [Section 9](#9-repeats) and are
+Repeat bar lines (`||:`, `:||`) are specified in [Section 9](#9-repeats) and are
 **not** reserved — they are defined now.
 
 ### 7.6 Examples
@@ -663,12 +663,13 @@ Repeats are **first-class** constructs. CML does not express repetition in prose
 
 ### 9.1 Syntax
 
-A repeated span is opened with `:||` and closed with `||:`. (Mnemonic: the
-colon "dots" sit on the inside of the repeated region, mirroring staff notation
-where repeat dots face the repeated music.) The span contains ordinary measures:
+A repeated span is opened with `||:` and closed with `:||`. (Mnemonic: the
+colon "dots" sit on the side facing the repeated music, matching staff notation.
+The opener's dots face right, into the span; the closer's dots face left, into
+the span.) The span contains ordinary measures:
 
 ```cml
-:|| C | F | G | C ||:
+||: C | F | G | C :||
 ```
 
 This denotes: play the measures `C | F | G | C`, then repeat them. With no
@@ -677,10 +678,10 @@ explicit count, the default is **two total passes** (play once, repeat once).
 ### 9.2 Explicit Repeat Count
 
 An explicit repeat count is given with `xN` (or `xN`) immediately after the
-closing `||:`:
+closing `:||`:
 
 ```cml
-:|| C | F | G | C ||: x4
+||: C | F | G | C :|| x4
 ```
 
 `x4` means **four total passes** of the enclosed measures. The count `N` **MUST**
@@ -699,12 +700,12 @@ permitted for generated output and explicitness.
 
 A conforming processor **MUST**:
 
-1. Recognize `:||` as "repeat-start" and `||:` as "repeat-end" tokens.
+1. Recognize `||:` as "repeat-start" and `:||` as "repeat-end" tokens.
 2. Collect the measures between them into a single `RepeatGroup` node.
 3. Attach the repeat count: the integer from a trailing `xN` if present,
    otherwise the default value `2`.
-4. Report an error if a `:||` has no matching `||:` before end of section/file
-   (see [Section 18](#18-validation-rules)), or if `||:` appears with no open
+4. Report an error if a `||:` has no matching `:||` before end of section/file
+   (see [Section 18](#18-validation-rules)), or if `:||` appears with no open
    repeat.
 
 When producing the expanded Arrangement
@@ -714,11 +715,11 @@ enclosed measures `count` times (subject to alternate endings, Section 10).
 ### 9.5 Examples
 
 ```cml
-:|| C | F | G | C ||:          # play twice (default)
-:|| C | F | G | C ||: x4       # play four times
+||: C | F | G | C :||          # play twice (default)
+||: C | F | G | C :|| x4       # play four times
 section Chorus
 | C | G |
-:|| Am | F ||: x3              # repeat group preceded by two measures
+||: Am | F :|| x3              # repeat group preceded by two measures
 | C |
 ```
 
@@ -733,12 +734,12 @@ different passes.
 
 An ending is introduced by a bracketed ordinal marker `[N]` where `N` is the
 pass number on which that ending applies. Endings appear at the **end of a
-repeat group**, before the closing `||:`:
+repeat group**, before the closing `:||`:
 
 ```cml
-:|| G | C | G |
+||: G | C | G |
    [1] D | G |
-   [2] C | G ||:
+   [2] C | G :||
 ```
 
 - `[1]` marks the **first ending**, played only on pass 1.
@@ -746,7 +747,7 @@ repeat group**, before the closing `||:`:
   final pass).
 
 An ending marker `[N]` applies to the measures following it, up to the next
-ending marker or the repeat close `||:`.
+ending marker or the repeat close `:||`.
 
 ### 10.2 Multiple Passes
 
@@ -779,9 +780,9 @@ the expanded Arrangement.
 
 ```cml
 section Verse
-:|| G | Em | C | D |
+||: G | Em | C | D |
    [1] G | D |
-   [2] G | C ||: x2
+   [2] G | C :|| x2
 ```
 
 ---
@@ -1226,8 +1227,8 @@ RepeatGroup    = RepeatStart
                  RepeatEnd [ RepeatCount ]
                  OptSpaces [ Comment ] Newline ;
 
-RepeatStart    = OptSpaces ":||" ;
-RepeatEnd      = "||:" ;
+RepeatStart    = OptSpaces "||:" ;
+RepeatEnd      = ":||" ;
 RepeatCount    = Spaces ( "x" | "X" ) Integer ;
 
 Ending         = OptSpaces EndingMarker MeasureSeqInline ;
@@ -1240,8 +1241,8 @@ MeasureSeqInline = { OptSpaces [ ChordList ] OptSpaces "|" } ;
 
 > Note: `RepeatStart` and `RepeatEnd` are shown here on a conceptual single
 > construct. In practice a repeat group MAY be written across multiple physical
-> lines (opening `:||` … measures … `||: xN`). Implementations tokenize `:||`,
-> `||:`, and `xN` and treat the intervening measures as the group body.
+> lines (opening `||:` … measures … `:|| xN`). Implementations tokenize `||:`,
+> `:||`, and `xN` and treat the intervening measures as the group body.
 
 ### 16.8 Lyrics Rules
 
@@ -1339,7 +1340,7 @@ title "Amazing Grace"
 
 section Verse
 
-:|| G | C | G | D ||: x2
+||: G | C | G | D :|| x2
 ```
 
 **Canonical JSON AST:**
@@ -1428,8 +1429,8 @@ is classified as an **error** (invalid document; processing MAY stop) or a
 | # | Condition | Severity | Notes |
 |---|-----------|----------|-------|
 | V1 | `section` keyword with no following name | **error** | Missing section name (e.g. `section` on a line alone). |
-| V2 | Repeat start `:||` with no matching `||:` in the section | **error** | Unclosed repeat. |
-| V3 | Repeat end `||:` with no preceding `:||` | **error** | Dangling repeat close. |
+| V2 | Repeat start `||:` with no matching `:||` in the section | **error** | Unclosed repeat. |
+| V3 | Repeat end `:||` with no preceding `||:` | **error** | Dangling repeat close. |
 | V4 | Repeat count `xN` with `N < 1` or non-integer | **error** | Invalid repeat count. |
 | V5 | Measure line not starting/ending with `|` | **error** | Malformed measure boundaries. |
 | V6 | Invalid chord root (not `A`–`G`) | **error** | e.g. `H`, `c`. |
@@ -1544,12 +1545,12 @@ title "Repeat Demo"
 key G
 
 section Verse
-:|| G | Em | C | D |
+||: G | Em | C | D |
    [1] G | D |
-   [2] G | C ||: x2
+   [2] G | C :|| x2
 
 section Chorus
-:|| C | G | D | G ||: x4
+||: C | G | D | G :|| x4
 ```
 
 ### Example 4 — Song With Metadata

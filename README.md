@@ -22,7 +22,7 @@ key G
 tempo 72
 
 section Verse
-:|| G | C | G | D ||: x2
+||: G | C | G | D :|| x2
 ```
 
 ## Key properties
