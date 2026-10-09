@@ -327,6 +327,7 @@ metadata.
 | `composer`       | string                | `composer "John Newton"`| Writer/composer. |
 | `album`          | string                | `album "Hymns Vol. 1"`  | Source album/collection. |
 | `key`            | key token             | `key G`                 | Tonal key; see 5.4. |
+| `scale`          | key token             | `scale G`               | Synonym for `key`; see 5.4. |
 | `tempo`          | integer (BPM)         | `tempo 72`              | Beats per minute. |
 | `time_signature` | ratio token           | `time_signature 4/4`    | Default meter; see 5.5. |
 | `capo`           | integer ≥ 0           | `capo 2`                | Guitar capo fret. |
@@ -339,6 +340,21 @@ A `key` value is a root note (`A`–`G`), an optional accidental (`#` or `b`), a
 an OPTIONAL mode suffix `m` for minor (e.g. `G`, `Eb`, `F#m`, `Bbm`). Absence of
 `m` denotes major. Processors **SHOULD** validate the root/accidental but
 **SHOULD NOT** reject unrecognized mode suffixes (future modes).
+
+#### 5.4.1 The `scale` Synonym
+
+Because `key` and `scale` are often used interchangeably by musicians, CML
+accepts `scale` as a synonym for `key`:
+
+- `scale` takes the same value syntax as `key`.
+- A processor **MUST** normalize `scale` to the `key` field in the AST. Both
+  spellings produce identical AST output.
+- If a document contains both `key` and `scale` with different values, the
+  processor **MUST** report error V16. If the values are identical, the
+  processor **MUST NOT** report an error.
+
+`scale` does not denote a mode or scale-degree collection (such as Dorian or
+harmonic minor) in v0.1. Such values are reserved for a future revision.
 
 ### 5.5 The `time_signature` Value
 
@@ -1425,6 +1441,7 @@ is classified as an **error** (invalid document; processing MAY stop) or a
 | V13 | Sum of explicit durations ≠ bar length | **warning** | May be a pickup bar (§13.4). |
 | V14 | Non-contiguous ending numbers (gap) | **warning** | e.g. `[1]` then `[3]`. |
 | V15 | Experimental syntax used (fractional durations, nav markers) | **warning** | Mark as experimental (§13.5, §14). |
+| V16 | `key` and `scale` both present with different values | **error** | Conflicting tonal key (§5.4.1). |
 
 ### 18.1 Error Reporting
 
