@@ -879,17 +879,21 @@ A lyric syntax for CML should:
 
 ### 12.2 Option A — Paired Lyric Line (chord line + `>` lyric line)
 
-A lyric line immediately follows a measure line and begins with a `>` sigil.
-Text is aligned to measures positionally by splitting on `|`:
+Each lyric line begins with a `>` sigil and applies to the measure line directly
+above it. Every lyric line needs its own `>`; a `>` line does not extend to the
+lines below it. Bars are optional: with bars, cells align to measures; without
+bars, the line is one unaligned lyric string.
 
 ```cml
 | G        | C      | G       | D     |
 > A- ma-   | zing   | grace   | how   |
+> Amazing grace how
 ```
 
-**Pros:** visually aligned; easy to see which words fall under which bar.
-**Cons:** requires the author to maintain column alignment (fragile with
-proportional fonts and when editing); whitespace becomes meaningful.
+**Pros:** visually aligned when bars are used; easy to see which words fall under
+which bar; free text needs no bars.
+**Cons:** aligned bars require the author to maintain column alignment (fragile
+with proportional fonts and when editing); free text has no per-measure alignment.
 
 ### 12.3 Option B — Inline Lyrics After Chords
 
@@ -915,6 +919,16 @@ section Verse
 | G | C | G | D |
 lyrics
 | A-ma- | zing | grace, how | sweet |
+```
+
+Free-text lyrics (no bars) are also allowed. The whole line is one unaligned
+lyric string for the measure line above it:
+
+```cml
+section Verse
+| G | C | G | D |
+lyrics
+Amazing grace how sweet
 ```
 
 **Pros:** keeps the chord stream pristine; lyrics are clearly optional and
@@ -945,12 +959,15 @@ Rules for the canonical form:
 
 1. A `lyrics` block is introduced by the keyword `lyrics` on its own line,
    inside a section, after the measure line(s) it annotates.
-2. Each lyric line is a `|`-delimited sequence of **cells**; the *k*-th cell
-   aligns to the *k*-th measure of the corresponding measure line.
+2. Each lyric line is either a `|`-delimited sequence of **cells**, or
+   **free text** with no bars. For cell lines, the *k*-th cell aligns to the
+   *k*-th measure of the corresponding measure line. A free-text line is one
+   unaligned lyric string for the measure line(s) it annotates.
 3. A cell MAY be empty (an unsung bar). Leading/trailing whitespace in a cell is
    trimmed.
-4. The number of cells **SHOULD** equal the number of measures it annotates; a
-   mismatch **SHOULD** yield a warning, not a fatal error.
+4. For cell lines, the number of cells **SHOULD** equal the number of measures it
+   annotates; a mismatch **SHOULD** yield a warning, not a fatal error. Free-text
+   lines are not checked against measure counts.
 5. Hyphens within a word (`A-ma-zing`) denote syllable breaks for renderers that
    do syllabic layout; renderers that do not **SHOULD** display hyphens as
    written or join them per house style.
@@ -1282,9 +1299,10 @@ MeasureSeqInline = { OptSpaces [ ChordList ] OptSpaces "|" } ;
 LyricsBlock    = OptSpaces "lyrics" OptSpaces [ Comment ] Newline
                  LyricLine { LyricLine } ;
 
-LyricLine      = OptSpaces "|" LyricCellSeq OptSpaces Newline ;
+LyricLine      = OptSpaces ( "|" LyricCellSeq | LyricText ) OptSpaces Newline ;
 LyricCellSeq   = LyricCell "|" { LyricCell "|" } ;
 LyricCell      = { ? any character except "|" and newline ? } ;
+LyricText      = { ? any character except newline ? } ;
 ```
 
 ### 16.9 Navigation Rules (reserved)
