@@ -1,0 +1,8 @@
+# This file demonstrates comments (Section 15).
+# A comment can take a whole line.
+title "Comments"
+key C
+
+section Verse
+| F#m | C | G | D |   # F#m is a chord, not a comment
+| C | G | Am | F |    # a trailing comment after a measure line

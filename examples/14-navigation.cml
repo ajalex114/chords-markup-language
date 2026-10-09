@@ -1,0 +1,17 @@
+# Reserved: navigation markers (Section 14). Not required by v0.1.
+title "Navigation"
+key G
+
+section Verse
+%bookmark A
+| G | C | G | D |
+%goto-end
+| G | D |
+
+section Chorus
+| C | G | D | G |
+%goto-start
+%goto A
+
+%ending
+| G |

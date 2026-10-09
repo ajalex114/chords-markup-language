@@ -1,0 +1,14 @@
+title "Sections Demo"
+key C
+
+section Intro
+| C | F | G | C |
+
+section Verse
+| Am | F | C | G |
+
+section "Pre Chorus"
+| F | G | Am | Am |
+
+section Chorus
+| C | G | Am | F |

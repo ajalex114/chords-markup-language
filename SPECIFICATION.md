@@ -1,8 +1,8 @@
 # Chords Markup Language (CML)
 
-**Version 0.1 — Draft**
+**Version 0.1**
 
-Status: Draft
+Status: Pre-release
 Document type: Open Specification
 License: This specification is published as an open standard.
 
@@ -1069,16 +1069,19 @@ time_signature 4/4
 
 Common Western navigation constructs and their intended CML spelling:
 
-| Construct | Intended token | Role |
-|-----------|----------------|------|
-| Segno     | `%segno`       | A named target (the "sign"). |
-| Coda      | `%coda`        | A named target (the "coda"/tail). |
-| To Coda   | `%to-coda`     | Jump instruction to the coda on the final pass. |
-| Da Capo   | `%dc` (D.C.)   | Return to the beginning. |
-| Dal Segno | `%ds` (D.S.)   | Return to the most recent `%segno`. |
-| Fine      | `%fine`        | Marks the end point for a D.C./D.S. al Fine. |
+| Construct | Plain-English meaning | Token | Alias token | Role |
+|-----------|-----------------------|-------|-------------|------|
+| Segno     | "Bookmark: come back here later" (the sign 𝄋) | `%segno` | `%bookmark` | A named target. |
+| Coda      | "The ending section, played only at the end" (the sign 𝆌) | `%coda` | `%ending` | A named target. |
+| To Coda   | "Skip ahead to the ending section" | `%to-coda` | `%goto-end` | Jump to the coda on the final pass. |
+| Da Capo   | "Go back to the very beginning" (D.C.) | `%dc` | `%goto-start` | Return to the beginning. |
+| Dal Segno | "Go back to the bookmark" (D.S.) | `%ds` | `%goto` | Return to the most recent `%segno`. |
+| Fine      | "The song ends here" | `%fine` | `%end` | Marks the end point for a D.C./D.S. al Fine. |
 
-The `%` sigil is reserved for navigation markers so they are lexically distinct
+A token and its alias are identical in meaning. A parser **MUST** accept both forms
+and treat them as the same construct. Tools **SHOULD** write the primary token.
+
+The `%` prefix character is reserved for navigation markers so they are lexically distinct
 from chords, measures, and sections.
 
 ### 14.2 Placement
@@ -1088,7 +1091,7 @@ section:
 
 ```cml
 section Verse
-%segno
+%segno A
 | G | C | G | D |
 %to-coda
 | G | D |
@@ -1098,6 +1101,23 @@ section Chorus
 %dc-al-coda          # D.C. al Coda: back to top, then jump to coda
 
 %coda
+| G |
+```
+
+The same song written with the alias tokens. The meaning is identical:
+
+```cml
+section Verse
+%bookmark A
+| G | C | G | D |
+%goto-end
+| G | D |
+
+section Chorus
+| C | G | D | G |
+%goto-start          # back to the top, then jump to the ending
+
+%ending
 | G |
 ```
 
@@ -1641,14 +1661,14 @@ section Verse
 
 ## 21. Versioning Strategy
 
-CML uses a `MAJOR.MINOR` version scheme, with draft qualifiers before 1.0.
+CML uses a `MAJOR.MINOR` version scheme, with pre-release qualifiers before 1.0.
 
-### 21.1 Draft Versions
+### 21.1 Pre-1.0 Versions
 
-Versions prior to `1.0` are **drafts** (e.g. `0.1 Draft`, `0.2 Draft`). Draft
+Versions prior to `1.0` are **pre-release** versions (e.g. `0.1`, `0.2`). Pre-1.0
 versions **MAY** make breaking changes between releases. Experimental features
 (e.g. rhythm subdivisions, navigation semantics) are introduced and refined in
-drafts and are explicitly labelled **experimental**.
+pre-1.0 versions and are explicitly labelled **experimental**.
 
 ### 21.2 Minor Versions
 
@@ -1823,5 +1843,5 @@ meaning given by the context in which the term appears:
 
 ---
 
-*End of Chords Markup Language (CML) Specification, Version 0.1 Draft.*
+*End of Chords Markup Language (CML) Specification, Version 0.1.*
 

@@ -1,0 +1,7 @@
+# Experimental: explicit beat durations (Section 13). Not required by v0.1.
+title "Durations"
+key C
+
+section Verse
+| C(2) F(2) |
+| C(1) G(1) Am(2) |

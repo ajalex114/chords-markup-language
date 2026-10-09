@@ -2,7 +2,7 @@
 
 **A standalone, text-based language for chord charts, lead sheets, and song structure.**
 
-Version 0.1 — Draft
+Version 0.1 — Pre-release
 
 ---
 
@@ -50,7 +50,7 @@ section Verse
 
 ## Status
 
-This is a **draft** specification. Draft versions (pre-1.0) may introduce
+This is a **pre-release** specification. Pre-1.0 versions may introduce
 breaking changes. See the *Versioning Strategy* section of the specification.
 
 ## License
