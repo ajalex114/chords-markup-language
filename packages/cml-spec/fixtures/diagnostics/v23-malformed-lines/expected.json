@@ -1,0 +1,89 @@
+{
+  "description": "Unclosed quotes and a missing value drop the line; extra section tokens keep the section. All V23.",
+  "mvp": true,
+  "spec": [
+    "§5.2",
+    "§6.2",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "key": "G"
+    },
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Chorus",
+        "label": "2",
+        "core": true,
+        "raw": "Chorus",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V23",
+      "severity": "error",
+      "line": 1,
+      "column": 7
+    },
+    {
+      "code": "V23",
+      "severity": "error",
+      "line": 2,
+      "column": 1
+    },
+    {
+      "code": "V23",
+      "severity": "error",
+      "line": 5,
+      "column": 9
+    },
+    {
+      "code": "V23",
+      "severity": "error",
+      "line": 7,
+      "column": 18
+    }
+  ]
+}

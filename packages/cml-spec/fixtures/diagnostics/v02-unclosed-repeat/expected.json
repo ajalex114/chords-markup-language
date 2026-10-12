@@ -1,0 +1,97 @@
+{
+  "description": "A repeat still open at end of file: V2 at the ||:, measures kept in a repeat group.",
+  "mvp": true,
+  "spec": [
+    "§9.4",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          },
+          {
+            "kind": "repeat",
+            "count": 2,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "G",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "G"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "D",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "D"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "E",
+                    "accidental": null,
+                    "quality": "m",
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "Em"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V2",
+      "severity": "error",
+      "line": 2,
+      "column": 1
+    }
+  ]
+}

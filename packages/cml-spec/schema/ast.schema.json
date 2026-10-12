@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cml.dev/schema/0.1/ast.schema.json",
+  "title": "CML v0.1 AST",
+  "description": "Canonical JSON AST for a CML document (SPECIFICATION.md §17). 'span' properties are optional and are ignored by conformance comparison.",
+  "$ref": "#/$defs/Song",
+  "$defs": {
+    "Song": {
+      "type": "object",
+      "required": ["cmlVersion", "metadata", "sections"],
+      "additionalProperties": false,
+      "properties": {
+        "cmlVersion": { "const": "0.1" },
+        "metadata": {
+          "type": "object",
+          "description": "Lowercased keys. 'scale' is stored as 'key'. tempo and capo are numbers when all digits; everything else is a string.",
+          "propertyNames": { "pattern": "^[a-z_][a-z0-9_-]*$" },
+          "additionalProperties": { "type": ["string", "integer"] }
+        },
+        "sections": { "type": "array", "items": { "$ref": "#/$defs/Section" } }
+      }
+    },
+    "Section": {
+      "type": "object",
+      "required": ["type", "label", "core", "raw", "elements"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": ["string", "null"], "description": "Canonical core type, custom name, or null (implicit or nameless section)." },
+        "label": { "type": ["string", "null"] },
+        "core": { "type": "boolean" },
+        "raw": { "type": ["string", "null"], "description": "Section name as written, without quotes or label." },
+        "elements": { "type": "array", "items": { "$ref": "#/$defs/Element" } },
+        "span": { "$ref": "#/$defs/Span" }
+      }
+    },
+    "Element": {
+      "oneOf": [
+        { "$ref": "#/$defs/Measure" },
+        { "$ref": "#/$defs/RepeatGroup" },
+        { "$ref": "#/$defs/NavigationMarker" }
+      ]
+    },
+    "Measure": {
+      "type": "object",
+      "required": ["kind", "chords"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "measure" },
+        "chords": { "type": "array", "items": { "$ref": "#/$defs/Chord" } },
+        "lyrics": { "type": "array", "items": { "type": "string" } },
+        "span": { "$ref": "#/$defs/Span" }
+      }
+    },
+    "Accidental": { "enum": ["#", "b", null] },
+    "Root": { "enum": ["A", "B", "C", "D", "E", "F", "G"] },
+    "Chord": {
+      "type": "object",
+      "required": ["kind", "root", "accidental", "quality", "bass", "duration", "noChord", "raw"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "chord" },
+        "root": { "oneOf": [{ "$ref": "#/$defs/Root" }, { "type": "null" }] },
+        "accidental": { "$ref": "#/$defs/Accidental" },
+        "quality": { "type": ["string", "null"], "minLength": 1 },
+        "bass": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": ["root", "accidental"],
+              "additionalProperties": false,
+              "properties": {
+                "root": { "$ref": "#/$defs/Root" },
+                "accidental": { "$ref": "#/$defs/Accidental" }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "duration": { "type": "null", "description": "Reserved; always null in v0.1 (§13)." },
+        "noChord": { "type": "boolean" },
+        "raw": { "type": "string", "minLength": 1 },
+        "span": { "$ref": "#/$defs/Span" }
+      },
+      "if": { "properties": { "noChord": { "const": true } } },
+      "then": {
+        "properties": {
+          "root": { "type": "null" },
+          "accidental": { "type": "null" },
+          "quality": { "type": "null" },
+          "bass": { "type": "null" },
+          "raw": { "enum": ["N.C.", "NC"] }
+        }
+      },
+      "else": { "properties": { "root": { "$ref": "#/$defs/Root" } } }
+    },
+    "RepeatGroup": {
+      "type": "object",
+      "required": ["kind", "count", "body", "endings"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "repeat" },
+        "count": { "type": "integer", "minimum": 1 },
+        "body": { "type": "array", "items": { "$ref": "#/$defs/Measure" } },
+        "endings": { "type": "array", "items": { "$ref": "#/$defs/Ending" } },
+        "span": { "$ref": "#/$defs/Span" }
+      }
+    },
+    "Ending": {
+      "type": "object",
+      "required": ["passes", "body"],
+      "additionalProperties": false,
+      "properties": {
+        "passes": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "minItems": 1 },
+        "body": { "type": "array", "items": { "$ref": "#/$defs/Measure" } },
+        "span": { "$ref": "#/$defs/Span" }
+      }
+    },
+    "NavigationMarker": {
+      "type": "object",
+      "description": "Design sketch; never produced in v0.1 (§14).",
+      "required": ["kind", "marker", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "nav" },
+        "marker": { "type": "string" },
+        "name": { "type": ["string", "null"] },
+        "span": { "$ref": "#/$defs/Span" }
+      }
+    },
+    "Position": {
+      "type": "object",
+      "required": ["line", "column"],
+      "additionalProperties": false,
+      "properties": {
+        "line": { "type": "integer", "minimum": 1 },
+        "column": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "Span": {
+      "type": "object",
+      "description": "1-based; 'end' is exclusive. Columns count Unicode code points.",
+      "required": ["start", "end"],
+      "additionalProperties": false,
+      "properties": {
+        "start": { "$ref": "#/$defs/Position" },
+        "end": { "$ref": "#/$defs/Position" }
+      }
+    }
+  }
+}

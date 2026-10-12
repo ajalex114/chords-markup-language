@@ -1,0 +1,31 @@
+{
+  "name": "cml-spec",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Machine-readable companion to the CML v0.1 specification: grammar, AST schema, diagnostic catalogue, and conformance fixtures.",
+  "type": "module",
+  "types": "types/ast.d.ts",
+  "exports": {
+    "./types": {
+      "types": "./types/ast.d.ts"
+    },
+    "./diagnostics.json": "./diagnostics/diagnostics.json",
+    "./schema/*": "./schema/*",
+    "./fixtures/*": "./fixtures/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "diagnostics",
+    "fixtures",
+    "grammar",
+    "schema",
+    "types"
+  ],
+  "scripts": {
+    "grammar": "node scripts/extract-grammar.mjs",
+    "test": "node scripts/validate.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
+}

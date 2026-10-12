@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cml.dev/schema/0.1/expected.schema.json",
+  "title": "CML conformance fixture expectation",
+  "type": "object",
+  "required": ["description", "mvp", "ast", "diagnostics"],
+  "additionalProperties": false,
+  "properties": {
+    "description": { "type": "string", "minLength": 1 },
+    "mvp": { "type": "boolean", "description": "True if the parser MVP must pass this fixture." },
+    "spec": { "type": "array", "items": { "type": "string" }, "description": "Spec sections exercised." },
+    "ast": { "$ref": "ast.schema.json" },
+    "diagnostics": {
+      "type": "array",
+      "description": "All expected diagnostics, sorted by line, then column, then code.",
+      "items": {
+        "type": "object",
+        "required": ["code", "severity", "line", "column"],
+        "additionalProperties": false,
+        "properties": {
+          "code": { "type": "string", "pattern": "^V[0-9]+$" },
+          "severity": { "enum": ["error", "warning"] },
+          "line": { "type": "integer", "minimum": 1 },
+          "column": { "type": "integer", "minimum": 1 }
+        }
+      }
+    }
+  }
+}

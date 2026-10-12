@@ -1,0 +1,87 @@
+{
+  "description": "Content after the last bar, and a lone bar: V5; that content is ignored.",
+  "mvp": true,
+  "spec": [
+    "§7.1",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "D",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "D"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V5",
+      "severity": "error",
+      "line": 1,
+      "column": 7
+    },
+    {
+      "code": "V5",
+      "severity": "error",
+      "line": 2,
+      "column": 11
+    },
+    {
+      "code": "V5",
+      "severity": "error",
+      "line": 3,
+      "column": 1
+    }
+  ]
+}

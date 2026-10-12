@@ -1,0 +1,143 @@
+{
+  "description": "A # or b right after the root is always the accidental (§8.3.1).",
+  "mvp": true,
+  "spec": [
+    "§8.3",
+    "§8.3.1"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "B",
+                "accidental": "b",
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Bb"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "B",
+                "accidental": "b",
+                "quality": "maj7",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Bbmaj7"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "B",
+                "accidental": "b",
+                "quality": "b5",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Bbb5"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": "b",
+                "quality": "5",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Cb5"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "7b9",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C7b9"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "F",
+                "accidental": "#",
+                "quality": "m",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "F#m"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "7#9",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C7#9"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "(b5)",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C(b5)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

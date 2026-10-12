@@ -1,0 +1,47 @@
+{
+  "description": "key and scale with different values: V16 on the later line; the later value wins.",
+  "mvp": true,
+  "spec": [
+    "§5.4.1",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "key": "A"
+    },
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V16",
+      "severity": "error",
+      "line": 2,
+      "column": 1
+    }
+  ]
+}

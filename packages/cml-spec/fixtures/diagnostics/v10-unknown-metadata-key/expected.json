@@ -1,0 +1,55 @@
+{
+  "description": "Unknown metadata keys: V10; preserved as strings.",
+  "mvp": true,
+  "spec": [
+    "§5.6",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "title": "Song",
+      "ccli": "12345",
+      "difficulty": "easy"
+    },
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V10",
+      "severity": "warning",
+      "line": 2,
+      "column": 1
+    },
+    {
+      "code": "V10",
+      "severity": "warning",
+      "line": 3,
+      "column": 1
+    }
+  ]
+}
