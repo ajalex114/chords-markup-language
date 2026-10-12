@@ -1,0 +1,8 @@
+// Accidentals (Section 8.3). After the root, one # or b is always the accidental.
+title "Accidentals"
+key Bb
+
+section Chords
+| Bb | Eb | F# | Ab |
+| F#m | C#m7 | Bbmaj7 | Ebsus4 |
+| Cb | Cb5 | C(b5) | C7#9 |    // Cb5 = C-flat + quality 5; C(b5) = C with a flat five

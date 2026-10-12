@@ -1,4 +1,5 @@
-# Experimental: explicit beat durations (Section 13). Not required by v0.1.
+// Deferred: explicit beat durations (Section 13). NOT parsed in v0.1; the
+// parenthesized form below is illustrative and would parse as chord qualities.
 title "Durations"
 key C
 

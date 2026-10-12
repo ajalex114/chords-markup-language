@@ -1,17 +1,17 @@
-# Reserved: navigation markers (Section 14). Not required by v0.1.
+// Design sketch: navigation markers (Section 14). NOT parsed in v0.1: each
+// line starting with % produces warning V15 and is skipped.
 title "Navigation"
 key G
 
 section Verse
-%marker A
+%segno A
 | G | C | G | D |
-%goto-end
+%to-coda A
 | G | D |
 
 section Chorus
 | C | G | D | G |
-%goto-start
-%goto A
+%ds-al-coda A
 
-%ending
+%coda A
 | G |

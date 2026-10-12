@@ -40,6 +40,7 @@ section Verse
 | Path | Description |
 |------|-------------|
 | [`SPECIFICATION.md`](SPECIFICATION.md) | The full RFC-style v0.1 specification. |
+| [`PARSER_MVP.md`](PARSER_MVP.md) | Scope and acceptance criteria for the first parser. |
 | [`examples/`](examples/) | Example `.cml` documents referenced by the spec. |
 
 ## File format

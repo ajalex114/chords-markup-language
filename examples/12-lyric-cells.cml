@@ -1,0 +1,13 @@
+// Lyric lines (Section 12.6). Whitespace is always trimmed from lyric text and
+// from each cell, so the two lines below are equivalent.
+title "Lyric Cells"
+key G
+
+section Verse
+| G | G7 | C | G |
+> A-ma-zing | grace, how | sweet the | sound |
+>A-ma-zing|grace, how|sweet the|sound
+| G | Em | D |
+> that saved | | me
+// the empty second cell above is an unsung measure (no // comments on lyric lines)
+> free text lyric, one string for the measure line above

@@ -1,7 +1,9 @@
-# Intentionally invalid: used to demonstrate validation (Section 18).
+// Intentionally invalid: used to demonstrate validation (Section 18).
 title "Validation Errors"
 key G
 
 section Verse
-| G | C | H | D |          # V6: invalid chord root "H"
-:|| G | C | G | D ||:      # V2: this repeat is never closed
+| G | C | H | D |          // V6: invalid chord root "H"
+| G | C | G | D :||         // V3: repeat end with no matching start
+
+||: G | C | G | D |         // V2: this repeat is never closed

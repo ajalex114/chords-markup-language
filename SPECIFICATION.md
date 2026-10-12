@@ -192,7 +192,8 @@ the language:
   semantics.
 - **Chord extension strings** are parsed permissively (see
   [Section 8](#8-chords)) so new chord qualities do not break parsers.
-- **Reserved sigils** (`@`, `!`, `*`) are set aside for future directives.
+- **Reserved sigils** (`@`, `!`, `*`) are set aside for future directives (see
+  [Section 4.6.1](#461-sigils)).
 
 A conforming processor **SHOULD** preserve constructs it does not understand
 rather than discard them, and **SHOULD** surface them as warnings rather than
@@ -282,10 +283,26 @@ To allow forward evolution:
   metadata key (e.g. `version "0.1"`). If absent, processors **SHOULD** assume
   the latest version they implement.
 - The sigils `@`, `!`, and `*` at the start of a token are **reserved** for
-  future directive syntax and **MUST NOT** be used by authors in v0.1 except
-  where this document assigns them meaning.
+  future directive syntax and **MUST NOT** be used by authors in v0.1. See
+  §4.6.1.
 - Unknown metadata keys and unknown chord qualities **MUST NOT** cause a fatal
   parse error (see Sections 5 and 8).
+
+#### 4.6.1 Sigils
+
+Leading characters that carry meaning in v0.1:
+
+| Sigil | Meaning | Section |
+|-------|---------|---------|
+| `\|`, `\|\|:`, `:\|\|` | Bar lines and repeat markers | §7, §9 |
+| `>` | Lyric line | §12 |
+| `%` | Navigation marker (not supported in v0.1) | §14 |
+| `//` | Comment | §15 |
+
+The sigils `@`, `!`, and `*` are **reserved, unassigned**. When a processor meets
+one at the start of a line or token it **MUST** emit warning V21, skip that line
+or token, and continue. It **MUST NOT** fail. This lets files written for a
+later version still load in an older processor.
 
 ---
 
@@ -294,8 +311,9 @@ To allow forward evolution:
 ### 5.1 Overview
 
 Metadata describes the Song as a whole. Metadata appears as a series of
-**property lines**, conventionally (but not necessarily) at the top of the file,
-before the first `section` or measure.
+**property lines** at the top of the file, before the first `section` or measure
+line. In v0.1 a property line after the body has started is an error (V20); see
+§5.8.
 
 ### 5.2 Syntax
 
@@ -305,7 +323,8 @@ A metadata property is a line of the form:
 <key> <value>
 ```
 
-- `<key>` is an identifier (`[A-Za-z_][A-Za-z0-9_]*`), case-insensitive, and is
+- `<key>` is an identifier (`[A-Za-z_][A-Za-z0-9_-]*`; hyphens allowed, same as
+  every identifier in §16.1), case-insensitive, and is
   normalized to lowercase by processors.
 - `<value>` is either:
   - a **quoted string** (`"..."`) — REQUIRED when the value contains spaces or
@@ -315,6 +334,10 @@ A metadata property is a line of the form:
 
 One property per line. A property line **MUST NOT** begin with a bar line `|`
 (which would make it a measure line).
+
+`section` is a **reserved word** and **MUST NOT** be used as a metadata key. A
+line whose first token is `section` (case-insensitive) is always a section
+header (§6.2), never a property line.
 
 ### 5.3 Core Metadata Keys
 
@@ -360,8 +383,8 @@ harmonic minor) in v0.1. Such values are reserved for a future revision.
 ### 5.5 The `time_signature` Value
 
 A `time_signature` value is `<numerator>/<denominator>` where both are positive
-integers (e.g. `4/4`, `3/4`, `6/8`, `12/8`). This meter is the Song default and
-MAY be overridden per-section in a future revision (reserved).
+integers (e.g. `4/4`, `3/4`, `6/8`, `12/8`). This meter is the Song default.
+Mid-song meter changes are reserved for a future revision (§5.8).
 
 ### 5.6 Unknown Keys
 
@@ -381,6 +404,28 @@ tempo 72
 time_signature 3/4
 copyright "Public Domain"
 ```
+
+### 5.8 Line Classification and Mid-Song Changes
+
+A processor classifies each non-blank, non-comment line by its first token:
+
+| First token | Line type |
+|-------------|-----------|
+| `section` | Section header (§6) |
+| `\|`, `\|\|:`, `:\|\|` | Measure line (§7, §9) |
+| `>` | Lyric line (§12) |
+| `%` | Navigation marker (§14; not supported in v0.1) |
+| anything else | Property line (§5.2) |
+
+A property line **MUST** appear before the first section header or measure line.
+A property line after the body has started is error V20. This includes
+`tempo`, `time_signature`, and `key`.
+
+Tempo, meter, and key changes within a song are legitimate and common, and are
+**reserved** for a future revision (see §22.10). The intended form is a
+property line placed between measures (for example `tempo 90` or
+`time_signature 3/4`), taking effect from the next measure. v0.1 documents
+**SHOULD NOT** use this form, so that they stay valid when it is specified.
 
 ---
 
@@ -525,23 +570,28 @@ order. Two chords ⇒ half the bar each; three chords ⇒ thirds; and so on.
 
 ### 7.5 Bar-Line Variants (informative / reserved)
 
-v0.1 recognizes the single bar line `|` as the only measure delimiter. The
-following are **reserved** for a future revision and **SHOULD NOT** be used by
-authors yet:
+v0.1 recognizes the single bar line `|` as the measure delimiter. The repeat bar
+lines `||:` and `:||` are also bar lines and are specified in
+[Section 9](#9-repeats). The following are **reserved** for a future revision and
+**SHOULD NOT** be used by authors yet:
 
 - `||` — a plain double bar / section divider.
 - `|.` or `||.` — final bar line.
 
-Repeat bar lines (`||:`, `:||`) are specified in [Section 9](#9-repeats) and are
-**not** reserved — they are defined now.
+#### 7.5.1 Bar-Line Tokenization
+
+A processor **MUST** tokenize bar lines by longest match, trying in this order:
+`||:`, `:||`, `||`, `|`. So `||:` is always a repeat start, never `||` followed
+by `:`. A plain `||` is accepted as an ordinary bar `|` with a warning that it is
+reserved.
 
 ### 7.6 Examples
 
 ```cml
-| C | F | G | C |            # four single-chord measures
-| C | | G | |                # measures 2 and 4 empty
-| C G | Am F | C |           # multi-chord measures
-| Cmaj7 | F#m7b5 | G7 | C |   # extended chord qualities
+| C | F | G | C |            // four single-chord measures
+| C | | G | |                // measures 2 and 4 empty
+| C G | Am F | C |           // multi-chord measures
+| Cmaj7 | F#m7b5 | G7 | C |   // extended chord qualities
 ```
 
 ---
@@ -574,6 +624,25 @@ An OPTIONAL accidental immediately follows the root:
 
 Examples: `F#`, `Bb`, `C#`, `Eb`. Double accidentals (`##`, `bb`) are
 **reserved** and **SHOULD NOT** be used in v0.1.
+
+#### 8.3.1 Accidental Binds First
+
+Because `b` and `#` are also permitted in quality strings (§8.4), a processor
+**MUST** apply this rule: if the character immediately after the root is `#` or
+`b`, it is the accidental. Only the characters after it form the quality.
+No lookahead is needed.
+
+| Token    | Root | Accidental | Quality  |
+|----------|------|------------|----------|
+| `Bb`     | B    | `b`        | *(none)* |
+| `Bbmaj7` | B    | `b`        | `maj7`   |
+| `Bbb5`   | B    | `b`        | `b5`     |
+| `Cb5`    | C    | `b`        | `5`      |
+| `C7b9`   | C    | *(none)*   | `7b9`    |
+| `Cm7b5`  | C    | *(none)*   | `m7b5`   |
+
+An author who means C with a flat five writes `C(b5)`. This rule applies in the
+same way to the bass note of a slash chord (§8.5).
 
 ### 8.4 Quality and Extensions
 
@@ -609,14 +678,26 @@ half-diminished). A processor **MUST** capture the full quality string
 verbatim and **SHOULD NOT** reject qualities it does not semantically
 understand.
 
+#### 8.4.1 Parentheses
+
+`(` and `)` inside a chord token are part of the quality string. Examples:
+`C7(b9)`, `C(b5)`, `Cadd(9)`. In v0.1 parentheses are never interpreted as
+durations (§13); the quality string is captured verbatim. A chord token with
+unbalanced parentheses (for example `C7(b9`) **SHOULD** produce warning V11.
+
+A quality that consists only of digits in parentheses (for example the `(2)` in
+`C(2)`) **SHOULD** produce warning V19, because it resembles the deferred
+duration spelling and is probably not an intended chord quality. The quality is
+still captured verbatim.
+
 ### 8.5 Slash Chords (Inversions / Alternate Bass)
 
 A slash chord specifies a bass note distinct from the root using `/`:
 
 ```
-G/B      # G major over a B bass
-D/F#     # D major over an F# bass
-C/E      # C major over an E bass
+G/B      // G major over a B bass
+D/F#     // D major over an F# bass
+C/E      // C major over an E bass
 ```
 
 The text after `/` is itself a root + optional accidental. Only a single `/`
@@ -675,10 +756,29 @@ the span.) The span contains ordinary measures:
 This denotes: play the measures `C | F | G | C`, then repeat them. With no
 explicit count, the default is **two total passes** (play once, repeat once).
 
+`||:` and `:||` are bar lines that also carry repeat meaning. `||:` replaces the
+opening `|` of a measure line, and `:||` replaces its closing `|`, so no extra `|`
+is written next to them.
+
+A repeat MAY be written on one line or across several; both forms parse
+identically:
+
+```cml
+||: C | F | G | C :|| x2
+
+||: C | F |
+| G | C :|| x2
+```
+
+In v0.1, `||:` **MUST** be the first token of its measure line, and `:||` **MUST**
+be the last token of its measure line, apart from an optional repeat count
+(§9.2) and comment. A repeat marker between measures in the middle of a line
+(`| C | ||: F | G :||`) is an error (V17).
+
 ### 9.2 Explicit Repeat Count
 
-An explicit repeat count is given with `xN` (or `xN`) immediately after the
-closing `:||`:
+An explicit repeat count is given with `xN` or `XN` after the closing `:||`,
+separated from it by one or more spaces:
 
 ```cml
 ||: C | F | G | C :|| x4
@@ -700,8 +800,10 @@ permitted for generated output and explicitness.
 
 A conforming processor **MUST**:
 
-1. Recognize `||:` as "repeat-start" and `:||` as "repeat-end" tokens.
-2. Collect the measures between them into a single `RepeatGroup` node.
+1. Recognize `||:` as "repeat-start" and `:||` as "repeat-end" tokens, using the
+   longest-match rule in §7.5.1.
+2. Collect the measures between them, across any number of lines, into a single
+   `RepeatGroup` node. Blank lines and comments between them are ignored.
 3. Attach the repeat count: the integer from a trailing `xN` if present,
    otherwise the default value `2`.
 4. Report an error if a `||:` has no matching `:||` before end of section/file
@@ -715,11 +817,11 @@ enclosed measures `count` times (subject to alternate endings, Section 10).
 ### 9.5 Examples
 
 ```cml
-||: C | F | G | C :||          # play twice (default)
-||: C | F | G | C :|| x4       # play four times
+||: C | F | G | C :||          // play twice (default)
+||: C | F | G | C :|| x4       // play four times
 section Chorus
 | C | G |
-||: Am | F :|| x3              # repeat group preceded by two measures
+||: Am | F :|| x3              // repeat group preceded by two measures
 | C |
 ```
 
@@ -907,9 +1009,14 @@ Lyrics are attached to individual chords inline using a quoted string:
 **Cons:** clutters the measure line; harms the "pure structure" readability that
 is CML's main advantage; hard to read a long verse.
 
-### 12.4 Option C — Separate `lyrics` Block Per Section (considered, not adopted)
+### 12.4 Rejected Alternative — Separate `lyrics` Block Per Section
 
-Each section MAY carry a dedicated `lyrics` block whose lines correspond, in
+> **Not part of CML.** This option was considered and rejected. The `lyrics`
+> keyword is not reserved, and the examples below are **not valid v0.1 syntax**
+> (a `lyrics` line is treated like any other line by §5.8). It is kept only as
+> design rationale.
+
+Each section would carry a dedicated `lyrics` block whose lines correspond, in
 order, to the measure lines of the section. Alignment is by **measure index**,
 using `|` as the per-measure separator but **without** requiring column
 alignment:
@@ -967,10 +1074,13 @@ Rules for the canonical form:
    MAY be omitted. An empty cell (`| |`) is an unsung measure.
 4. Otherwise the text is **free text**: one unaligned lyric string for the measure
    line above it.
-5. For cell lines, the number of cells **SHOULD** equal the number of measures it
+5. Whitespace is **always trimmed**: leading and trailing whitespace is removed
+   from the lyric text, from each cell, and from free text. Interior whitespace
+   is preserved. A cell that is empty after trimming is an unsung measure.
+6. For cell lines, the number of cells **SHOULD** equal the number of measures it
    annotates; a mismatch **SHOULD** yield a warning (V12), not a fatal error.
    Free-text lines are not checked against measure counts.
-6. Hyphens within a word (`A-ma-zing`) denote syllable breaks for renderers that
+7. Hyphens within a word (`A-ma-zing`) denote syllable breaks for renderers that
    do syllabic layout; renderers that do not **SHOULD** display hyphens as
    written or join them per house style.
 
@@ -991,9 +1101,12 @@ section Verse
 
 ## 13. Rhythm and Timing
 
-> **Status: partly experimental.** The equal-division default (13.1) is
-> normative. The explicit-duration syntax (13.2–13.4) is **RECOMMENDED but
-> marked experimental** for v0.1; its exact token form MAY change before v1.0.
+> **Status: deferred in v0.1.** The equal-division default (13.1) is
+> normative. Explicit durations (13.2–13.6) are **not part of v0.1 parsing**.
+> The `C(2)` spelling shown below is illustrative only: in v0.1, parentheses
+> inside a chord token belong to the chord quality (§8.4.1), so `C(2)` parses as
+> a chord with quality `(2)` and no duration. The delimiter for durations will
+> be chosen when this section is specified, and it will not be `(` `)`.
 
 ### 13.1 Default: Equal Division
 
@@ -1036,34 +1149,35 @@ bar).
 ### 13.5 Subdivisions (experimental)
 
 Fractional / subdivided durations are **experimental** and reserved. Two
-candidate notations are noted here for future standardization and **SHOULD NOT**
-be relied upon in v0.1:
+candidate notations are noted here as design ideas only. They are not parsed in
+v0.1, and the delimiter for durations is not yet decided (see §8.4.1):
 
 - Fractional beats: `C(0.5)` — half a beat.
 - Dotted/relative tokens: `C(.)`, `C(..)` — tool-defined.
 
-Processors encountering experimental duration syntax **SHOULD** parse it into a
-raw duration field and emit an "experimental feature" warning rather than
-failing.
+In v0.1 these tokens are ordinary chord tokens whose quality is the
+parenthesized text; no "experimental feature" diagnostic is emitted (V19 applies
+only to digits-only forms such as `C(2)`).
 
 ### 13.6 Examples
 
 ```cml
 time_signature 4/4
-| C(2) F(2) |            # two half-bar chords
-| C(1) G(1) Am(2) |      # 1 + 1 + 2 = 4 beats
-| C F |                  # equal division (implicit 2 + 2)
+| C(2) F(2) |            // two half-bar chords
+| C(1) G(1) Am(2) |      // 1 + 1 + 2 = 4 beats
+| C F |                  // equal division (implicit 2 + 2)
 ```
 
 ---
 
 ## 14. Navigation Constructs
 
-> **Status: reserved for a future revision.** This section specifies the
-> *intended* syntax and semantics so parser authors can plan for it. Processors
-> targeting v0.1 **MAY** recognize these tokens and place them in the AST as
-> opaque navigation markers, but full jump-resolution semantics are **not
-> required** for v0.1 conformance.
+> **Status: design sketch, not parsed in v0.1.** This section records the
+> *intended* syntax so the language can grow into it. A v0.1 processor **MUST NOT**
+> interpret navigation markers: a line whose first token starts with `%` **MUST**
+> produce warning V15 and be skipped, and processing continues. The tokens, aliases,
+> and name arguments below are provisional and MAY change before they are
+> specified.
 
 ### 14.1 Markers and Jumps
 
@@ -1075,11 +1189,28 @@ Common Western navigation constructs and their intended CML spelling:
 | Coda      | "The ending section, played only at the end" (the sign 𝆌) | `%coda` | `%ending` | A named target. |
 | To Coda   | "Skip ahead to the ending section" | `%to-coda` | `%goto-end` | Jump to the coda on the final pass. |
 | Da Capo   | "Go back to the very beginning" (D.C.) | `%dc` | `%goto-start` | Return to the beginning. |
-| Dal Segno | "Go back to the marker" (D.S.) | `%ds` | `%goto` | Return to the most recent `%segno`. |
+| Dal Segno | "Go back to the marker" (D.S.) | `%ds` | `%goto` | Return to a `%segno`. |
 | Fine      | "The song ends here" | `%fine` | `%end` | Marks the end point for a D.C./D.S. al Fine. |
 
-A token and its alias are identical in meaning. A parser **MUST** accept both forms
-and treat them as the same construct. Tools **SHOULD** write the primary token.
+Compound forms combine a return with a destination. They have no aliases:
+
+| Token | Meaning |
+|-------|---------|
+| `%dc-al-coda` | D.C. al Coda: back to the beginning, then jump to the coda. |
+| `%dc-al-fine` | D.C. al Fine: back to the beginning, then stop at `%fine`. |
+| `%ds-al-coda` | D.S. al Coda: back to the segno, then jump to the coda. |
+| `%ds-al-fine` | D.S. al Fine: back to the segno, then stop at `%fine`. |
+
+**Names.** `%segno`, `%coda`, `%to-coda`, `%ds`, their aliases, and the compound
+forms MAY take one optional bare name (for example `%segno A`, `%ds A`), so a song
+can have more than one segno. A jump with a name returns to the target with that
+name. With no name it refers to the unnamed target. `%dc`, `%fine`, and their
+aliases take no name.
+
+A token and its alias are identical in meaning, and a processor that implements
+navigation **MUST** accept both. Tools **SHOULD** write the primary token. Beware
+that `%goto-end` means "jump to the coda", not "jump to the end of the song", and
+that `%ending` means the coda, not an alternate ending (§10).
 
 The `%` prefix character is reserved for navigation markers so they are lexically distinct
 from chords, measures, and sections.
@@ -1093,31 +1224,32 @@ section:
 section Verse
 %segno A
 | G | C | G | D |
-%to-coda
+%to-coda A
 | G | D |
 
 section Chorus
 | C | G | D | G |
-%dc-al-coda          # D.C. al Coda: back to top, then jump to coda
+%ds-al-coda A        // D.S. al Coda: back to segno A, then jump to coda A
 
-%coda
+%coda A
 | G |
 ```
 
-The same song written with the alias tokens. The meaning is identical:
+The same song written with the alias tokens. The meaning is identical, except
+that compound forms have no aliases and are written as-is:
 
 ```cml
 section Verse
 %marker A
 | G | C | G | D |
-%goto-end
+%goto-end A
 | G | D |
 
 section Chorus
 | C | G | D | G |
-%goto-start          # back to the top, then jump to the ending
+%ds-al-coda A
 
-%ending
+%ending A
 | G |
 ```
 
@@ -1127,13 +1259,15 @@ When expanding the Arrangement, a processor that implements navigation
 **MUST** resolve jumps in the conventional order:
 
 1. Play through source order.
-2. On reaching `%dc`/`%ds`, jump to the beginning / most recent `%segno`.
-3. On the repeat pass, honor `%to-coda` by jumping to the `%coda` target.
+2. On reaching `%dc`/`%ds`, jump to the beginning / the `%segno` with the given
+   name (or the unnamed one).
+3. On the pass after a return, honor `%to-coda` by jumping to the `%coda` target
+   with the same name.
 4. Stop at `%fine` when performing an *al Fine* return.
 
 Because these interact subtly with repeats and endings, full semantics are
-deferred to a dedicated revision ([Section 21](#21-versioning-strategy)). Until
-then, markers are preserved in the AST but **MAY** be ignored during expansion.
+deferred to a dedicated revision ([Section 21](#21-versioning-strategy)). In
+v0.1 a processor does not parse these lines at all (see the status note above).
 
 ---
 
@@ -1141,23 +1275,25 @@ then, markers are preserved in the AST but **MAY** be ignored during expansion.
 
 ### 15.1 Line Comments
 
-A comment begins with `#` and continues to the end of the line. Everything from
-`#` to the line terminator is ignored by the processor:
+A comment begins with `//` and continues to the end of the line. Everything from
+`//` to the line terminator is ignored by the processor:
 
 ```cml
-# This is a whole-line comment
-| C | F | G | C |   # trailing comment after a measure line
+// This is a whole-line comment
+| C | F | G | C |   // trailing comment after a measure line
 ```
 
 ### 15.2 Rules
 
-- `#` **MUST NOT** be treated as a comment when it appears as an accidental
-  inside a chord token (e.g. `F#m`, `G/F#`). A `#` is a comment introducer only
-  when it is **not part of a chord token** — i.e. when preceded by whitespace or
-  at the start of a line.
+- `#` has no comment meaning in CML. It is an ordinary character, used as a sharp
+  accidental (`F#m`, `G/F#`) or inside chord qualities (`C7#9`).
+- `//` starts a comment only at the start of a line or when preceded by
+  whitespace. A `//` attached to other text (for example `http://example.com`
+  in a bare metadata value) is literal text.
+- `//` is not a comment introducer inside quoted strings or on lyric lines
+  (lines beginning with `>`), where it is literal text.
 - There is no block/multi-line comment syntax in v0.1; each comment line
-  **MUST** begin its comment with `#`.
-- Comments inside quoted strings are not comments (the `#` is literal text).
+  **MUST** begin its comment with `//`.
 
 ### 15.3 Processor Behavior
 
@@ -1198,7 +1334,9 @@ Identifier     = IdentStart { IdentChar } ;
 QuotedString   = '"' { StringChar } '"' ;
 StringChar     = AnyCharExceptQuoteOrNewline | '\\"' ;
 
-Comment        = "#" { AnyCharExceptNewline } ;
+(* Begins at line start or after Space; not recognized inside QuotedString
+   or LyricLine. See Section 15.2. *)
+Comment        = "//" { AnyCharExceptNewline } ;
 ```
 
 ### 16.2 Document Structure
@@ -1227,13 +1365,14 @@ MetadataLine   = OptSpaces MetaKey Spaces MetaValue OptSpaces
 MetaKey        = Identifier ;                     (* case-insensitive *)
 MetaValue      = QuotedString | BareValue ;
 BareValue      = BareChar { BareChar } ;
-BareChar       = ? any non-space, non-newline character except '"' and '#' ? ;
+BareChar       = ? any non-space, non-newline character except '"' ? ;
 ```
 
-> A line is parsed as a `MetadataLine` only if its first non-space character is
-> not `|` and the first token is a known/identifier key followed by a value.
-> Implementations typically distinguish metadata from measures by the leading
-> `|`.
+> A line is classified by its first token (§5.8): `section` begins a section
+> header, `|`/`||:`/`:||` a measure line, `>` a lyric line, `%` a navigation
+> marker; any other line before the body is a `MetadataLine`. `section` is a
+> reserved word and cannot be a `MetaKey`. A `MetadataLine` after the first
+> section header or measure line is error V20.
 
 ### 16.4 Section Rules
 
@@ -1256,25 +1395,34 @@ Element        = MeasureLine
 ### 16.5 Measure Rules
 
 ```ebnf
-MeasureLine    = OptSpaces "|" MeasureSeq OptSpaces [ Comment ] Newline ;
+(* Bar tokens use longest match: "||:", ":||", "||", "|" (Section 7.5.1).
+   "||:" may only open a line and ":||" may only close one (Section 9.1).
+   "||" is accepted as "|" with a warning. *)
+MeasureLine    = OptSpaces LineOpen { Measure "|" } Measure LineClose
+                 OptSpaces [ Comment ] Newline
+               | OptSpaces LineOpen { Measure "|" } Measure ":||"
+                 [ RepeatCount ] OptSpaces [ Comment ] Newline ;
 
-MeasureSeq     = Measure "|" { Measure "|" } ;
+LineOpen       = "|" | "||:" ;
+LineClose      = "|" ;
 
 Measure        = OptSpaces [ ChordList ] OptSpaces ;
 
 ChordList      = ChordItem { Spaces ChordItem } ;
 
-ChordItem      = NoChord | Chord [ Duration ] ;
+ChordItem      = NoChord | Chord ;
 
 NoChord        = "N.C." | "NC" ;
 
-Duration       = "(" DurationValue ")" ;
-DurationValue  = Integer [ "." Integer ] ;   (* fractional = experimental *)
+(* Durations are deferred in v0.1 (Section 13); parentheses belong to Quality.
+   Reserved production, not parsed in v0.1: Duration with a delimiter TBD. *)
 ```
 
 ### 16.6 Chord Rules
 
 ```ebnf
+(* Accidental binds first: a "#" or "b" right after Root is always the
+   Accidental, never part of Quality. See Section 8.3.1. *)
 Chord          = Root [ Accidental ] [ Quality ] [ "/" Bass ] ;
 
 Root           = "A" | "B" | "C" | "D" | "E" | "F" | "G" ;
@@ -1290,14 +1438,12 @@ QualityChar    = Letter | Digit | "+" | "-" | "#" | "b"
 ### 16.7 Repeat and Ending Rules
 
 ```ebnf
-RepeatGroup    = RepeatStart
-                 { MeasureLine | BlankOrComment }
-                 { Ending }
-                 RepeatEnd [ RepeatCount ]
-                 OptSpaces [ Comment ] Newline ;
-
-RepeatStart    = OptSpaces "||:" ;
-RepeatEnd      = ":||" ;
+(* Repeat markers are bar tokens inside MeasureLine (Section 16.5):
+     "||:" is the LineOpen of the first line of a repeat,
+     ":||" closes the last line, followed by an optional RepeatCount.
+   A RepeatGroup is the span of measures from a line opened by "||:" through
+   the line closed by ":||". It may be a single line or many, so it is paired
+   by the processor from tokens rather than defined by EBNF alone. *)
 RepeatCount    = Spaces ( "x" | "X" ) Integer ;
 
 Ending         = OptSpaces EndingMarker MeasureSeqInline ;
@@ -1308,26 +1454,37 @@ PassItem       = Integer [ "-" Integer ] ;       (* single or range *)
 MeasureSeqInline = { OptSpaces [ ChordList ] OptSpaces "|" } ;
 ```
 
-> Note: `RepeatStart` and `RepeatEnd` are shown here on a conceptual single
-> construct. In practice a repeat group MAY be written across multiple physical
-> lines (opening `||:` … measures … `:|| xN`). Implementations tokenize `||:`,
-> `:||`, and `xN` and treat the intervening measures as the group body.
+> Alternate endings (`Ending` and below) are outside the parser MVP; their
+> interaction with the line rules above will be specified with Section 10.
 
 ### 16.8 Lyrics Rules
 
 ```ebnf
-LyricLine      = OptSpaces ">" OptSpaces LyricText OptSpaces Newline ;
+LyricLine      = OptSpaces ">" LyricText Newline ;
 LyricText      = { ? any character except newline ? } ;
+                 (* Cell lines split LyricText on "|". The text, and each
+                    cell, MUST be trimmed of leading/trailing whitespace
+                    (Section 12.6 rule 5). *)
 ```
 
-### 16.9 Navigation Rules (reserved)
+### 16.9 Navigation Rules (design sketch, not parsed in v0.1)
 
 ```ebnf
-NavigationLine = OptSpaces NavMarker OptSpaces [ Comment ] Newline ;
-NavMarker      = "%segno" | "%coda" | "%to-coda"
-               | "%dc" | "%ds" | "%fine"
+(* A v0.1 processor does not parse these (Section 14). Any line whose first
+   token begins with "%" produces warning V15 and is skipped. The productions
+   below record the intended shape only. *)
+NavigationLine = OptSpaces NavMarker [ Spaces NavName ] OptSpaces
+                 [ Comment ] Newline ;
+NavName        = Identifier ;
+NavMarker      = "%segno" | "%marker"
+               | "%coda" | "%ending"
+               | "%to-coda" | "%goto-end"
+               | "%dc" | "%goto-start"
+               | "%ds" | "%goto"
+               | "%fine" | "%end"
                | "%dc-al-coda" | "%ds-al-coda"
                | "%dc-al-fine" | "%ds-al-fine" ;
+(* "%dc", "%goto-start", "%fine", "%end" and the *-al-fine forms take no name. *)
 ```
 
 ---
@@ -1373,7 +1530,7 @@ Chord {
   accidental: "#" | "b" | null
   quality: string | null      // verbatim quality/extension string
   bass:    { root: string, accidental: "#" | "b" | null } | null
-  duration: number | null     // beats, if explicit
+  duration: number | null     // reserved; always null in v0.1 (Section 13)
   noChord: boolean            // true for N.C.
   raw:     string             // original token, e.g. "F#m7b5"
 }
@@ -1390,9 +1547,10 @@ Ending {
   body:   Measure[]
 }
 
-NavigationMarker {            // reserved
+NavigationMarker {            // design sketch; not produced in v0.1
   kind: "nav"
-  marker: string              // "segno" | "coda" | "dc" | ...
+  marker: string              // primary token without "%": "segno" | "coda" | "dc" | ...
+  name:   string | null       // optional target name, e.g. "A"
 }
 ```
 
@@ -1505,10 +1663,15 @@ is classified as an **error** (invalid document; processing MAY stop) or a
 | V10 | Unknown metadata key | **warning** | Preserve, do not fail (§5.6). |
 | V11 | Unknown chord quality string | **warning** | Preserve verbatim (§8.4). |
 | V12 | Lyric cell count ≠ measure count | **warning** | Alignment mismatch (§12.6). |
-| V13 | Sum of explicit durations ≠ bar length | **warning** | May be a pickup bar (§13.4). |
+| V13 | Sum of explicit durations ≠ bar length | **warning** | Reserved; not emitted in v0.1 since durations are deferred (§13.4). |
 | V14 | Non-contiguous ending numbers (gap) | **warning** | e.g. `[1]` then `[3]`. |
-| V15 | Experimental syntax used (fractional durations, nav markers) | **warning** | Mark as experimental (§13.5, §14). |
+| V15 | Navigation marker line (starts with `%`) | **warning** | Not supported in v0.1; the line is skipped (§14). |
 | V16 | `key` and `scale` both present with different values | **error** | Conflicting tonal key (§5.4.1). |
+| V17 | Repeat marker `\|\|:` or `:\|\|` not at the start/end of a measure line | **error** | Mid-line repeat marker (§9.1). |
+| V18 | Plain double bar `\|\|` used | **warning** | Reserved; treated as `\|` (§7.5.1). |
+| V19 | Quality is only digits in parentheses, e.g. `C(2)` | **warning** | Looks like a deferred duration; kept as quality (§8.4.1). |
+| V20 | Property line (key/value) after the first section or measure line | **error** | Metadata is header-only in v0.1; mid-song changes reserved (§5.8). |
+| V21 | Reserved sigil `@`, `!` or `*` at the start of a line or token | **warning** | Skipped; reserved for future directives (§4.6.1). |
 
 ### 18.1 Error Reporting
 
@@ -1689,8 +1852,8 @@ targeting a newer major version than they implement.
 
 - Unknown metadata keys and chord qualities are preserved, not errors (§5.6,
   §8.4) — this is the primary forward-compatibility mechanism.
-- Reserved sigils (`@`, `!`, `*`, `%`) ensure future directives will not collide
-  with existing author syntax.
+- Reserved sigils (`@`, `!`, `*`; see §4.6.1) ensure future directives will not
+  collide with existing author syntax.
 - The `cmlVersion` field in the AST records which spec version produced it.
 
 ---
@@ -1749,10 +1912,12 @@ Promote the navigation constructs of §14 from reserved to fully specified,
 including their precise interaction with repeats and alternate endings during
 Arrangement expansion.
 
-### 22.10 Per-Section Meter and Key Changes
+### 22.10 Mid-Song Tempo, Meter, and Key Changes
 
-Allow `time_signature` and `key` to be overridden within a section, supporting
-songs with mid-piece modulations and metric changes.
+Allow `tempo`, `time_signature`, and `key` to change partway through a song,
+including within a section, supporting mid-piece modulations, metric changes,
+and tempo changes. The intended form is a property line between measures that
+takes effect from the next measure (§5.8). Requires a "change" node in the AST.
 
 ---
 

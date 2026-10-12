@@ -1,0 +1,13 @@
+// Intentionally invalid: more diagnostics (Section 18). See also example 18.
+title "More Diagnostics"
+key G
+
+section Verse
+|| G | C | G | D |          // V18 (warning): plain double bar, treated as |
+| G || C | G | D |           // V18 (warning)
+| G | C(2) | G | D |         // V19 (warning): digits-only parenthesized quality
+| G | C ||: G | D |          // V17 (error): repeat start not at start of line
+| G | C | G :|| D |          // V17 (error): repeat end not at end of line
+@ reserved sigil line         // V21 (warning): skipped
+%segno A                      // V15 (warning): navigation not supported, skipped
+tempo 120                     // V20 (error): property line after the body began

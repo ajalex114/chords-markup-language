@@ -1,0 +1,17 @@
+// A complete song using only the v0.1 parser MVP features (PARSER_MVP.md).
+title "MVP Song"
+artist "Example Artist"
+key G
+tempo 96
+time_signature 4/4
+
+section Intro
+| G | C | G | D |
+
+section Verse 1
+||: G | Em | C | D :|| x2    // repeat the four bars twice
+| G | Em | Am7 | D7sus4 |
+
+section Chorus
+||: C | G/B | Am7 | D :||     // default repeat count is 2
+| N.C. | G |                 // trailing comment

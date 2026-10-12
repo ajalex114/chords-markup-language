@@ -1,0 +1,7 @@
+// Slash chords (Section 8.5) and no-chord (Section 8.6).
+title "Slash and No Chord"
+key G
+
+section Intro
+| G/B | C/G | D/F# | G |
+| N.C. | NC | G | G |
