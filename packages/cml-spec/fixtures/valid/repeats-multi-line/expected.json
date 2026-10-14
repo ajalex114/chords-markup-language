@@ -1,0 +1,143 @@
+{
+  "description": "A repeat spanning lines, with a blank line and comment inside, parses like the one-line form; x1 is legal.",
+  "mvp": true,
+  "spec": [
+    "§9.1",
+    "§9.2",
+    "§9.4"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": "Verse",
+        "label": null,
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          },
+          {
+            "kind": "repeat",
+            "count": 2,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "C",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "C"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "F",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "F"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "G",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "G"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "C",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "C"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "D",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "D"
+              }
+            ]
+          },
+          {
+            "kind": "repeat",
+            "count": 1,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "E",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "E"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

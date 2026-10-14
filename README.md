@@ -41,7 +41,12 @@ section Verse
 |------|-------------|
 | [`SPECIFICATION.md`](SPECIFICATION.md) | The full RFC-style v0.1 specification. |
 | [`PARSER_MVP.md`](PARSER_MVP.md) | Scope and acceptance criteria for the first parser. |
+| [`SPEC_ISSUES.md`](SPEC_ISSUES.md) | Tracker of spec issues and how each was resolved. |
 | [`examples/`](examples/) | Example `.cml` documents referenced by the spec. |
+| [`packages/cml-spec/`](packages/cml-spec/) | Machine-readable spec: grammar, AST schema, diagnostic catalogue, and conformance fixtures. |
+| [`packages/cml-parser/`](packages/cml-parser/) | TypeScript reference parser, tested against the conformance fixtures. |
+
+Run `npm install` then `npm test` at the repository root to validate the spec package and run the parser tests.
 
 ## File format
 

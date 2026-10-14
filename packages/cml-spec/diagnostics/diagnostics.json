@@ -1,0 +1,30 @@
+{
+  "$comment": "Diagnostic catalogue for CML v0.1. Codes and severities MUST match the table in SPECIFICATION.md §18 (checked by scripts/validate.mjs). 'mvp' marks codes the parser MVP emits; 'status: reserved' codes are never emitted in v0.1.",
+  "version": "0.1",
+  "diagnostics": [
+    { "code": "V1",  "severity": "error",   "status": "active",   "mvp": true,  "spec": "§6.2",   "title": "Section keyword with no name",                     "recovery": "A new section with type null starts." },
+    { "code": "V2",  "severity": "error",   "status": "active",   "mvp": true,  "spec": "§9.4",   "title": "Unclosed repeat at end of file",                   "recovery": "Reported at the ||:. The collected measures form a repeat group with count 2." },
+    { "code": "V3",  "severity": "error",   "status": "active",   "mvp": true,  "spec": "§9.4",   "title": "Repeat end with no open repeat",                   "recovery": "The :|| is treated as | and any count is ignored." },
+    { "code": "V4",  "severity": "error",   "status": "active",   "mvp": true,  "spec": "§9.2",   "title": "Invalid repeat count",                             "recovery": "The count defaults to 2." },
+    { "code": "V5",  "severity": "error",   "status": "active",   "mvp": true,  "spec": "§7.1",   "title": "Malformed measure line boundaries",                "recovery": "Content after the last bar is ignored. A line with fewer than two bars, or starting with :||, yields no measures." },
+    { "code": "V6",  "severity": "error",   "status": "active",   "mvp": true,  "spec": "§8.2",   "title": "Invalid chord root or bass note",                  "recovery": "The chord token is dropped; its measure is kept." },
+    { "code": "V7",  "severity": "error",   "status": "active",   "mvp": false, "spec": "§10",    "title": "Ending marker outside a repeat group",             "recovery": "Alternate endings are outside the parser MVP." },
+    { "code": "V8",  "severity": "error",   "status": "active",   "mvp": true,  "spec": "§9.3",   "title": "Repeat group spans a section boundary",            "recovery": "Reported at the ||:. The group is closed at the section boundary with count 2." },
+    { "code": "V9",  "severity": "error",   "status": "active",   "mvp": true,  "spec": "§9.3",   "title": "Nested repeat group",                              "recovery": "The inner ||: is treated as |." },
+    { "code": "V10", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§5.6",   "title": "Unknown metadata key",                             "recovery": "Preserved in metadata as a string." },
+    { "code": "V11", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§8.4.1", "title": "Malformed chord quality",                          "recovery": "Quality kept verbatim." },
+    { "code": "V12", "severity": "warning", "status": "active",   "mvp": false, "spec": "§12.6",  "title": "Lyric cell count differs from measure count",      "recovery": "Lyrics are outside the parser MVP." },
+    { "code": "V13", "severity": "warning", "status": "reserved", "mvp": false, "spec": "§13.4",  "title": "Explicit durations do not fill the bar",           "recovery": "Not emitted in v0.1; durations are deferred." },
+    { "code": "V14", "severity": "warning", "status": "active",   "mvp": false, "spec": "§10",    "title": "Non-contiguous ending numbers",                    "recovery": "Alternate endings are outside the parser MVP." },
+    { "code": "V15", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§14",    "title": "Navigation marker not supported in v0.1",          "recovery": "The line is skipped." },
+    { "code": "V16", "severity": "error",   "status": "active",   "mvp": true,  "spec": "§5.4.1", "title": "key and scale conflict",                           "recovery": "Reported on the later line; the later value wins." },
+    { "code": "V17", "severity": "error",   "status": "active",   "mvp": true,  "spec": "§9.1",   "title": "Repeat marker in the middle of a measure line",    "recovery": "The marker is treated as | and is not paired." },
+    { "code": "V18", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§7.5.1", "title": "Plain double bar is reserved",                     "recovery": "Treated as |." },
+    { "code": "V19", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§8.4.1", "title": "Digits-only parenthesized quality",                "recovery": "Quality kept verbatim." },
+    { "code": "V20", "severity": "error",   "status": "active",   "mvp": true,  "spec": "§5.8",   "title": "Property line after the body started",             "recovery": "The line is skipped." },
+    { "code": "V21", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§4.6.1", "title": "Reserved sigil",                                   "recovery": "The line or token is skipped." },
+    { "code": "V22", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§5.2",   "title": "Unquoted property value contains spaces",          "recovery": "The value is the rest of the line, trimmed." },
+    { "code": "V23", "severity": "error",   "status": "active",   "mvp": true,  "spec": "§5.2",   "title": "Malformed property or section line",               "recovery": "Unclosed quote or missing value: line dropped. Extra section tokens: section starts with name and label." },
+    { "code": "V24", "severity": "error",   "status": "active",   "mvp": false, "spec": "§12.6",  "title": "Lyric line with no preceding measure line",        "recovery": "The lyric is not attached. Lyrics are outside the parser MVP." }
+  ]
+}

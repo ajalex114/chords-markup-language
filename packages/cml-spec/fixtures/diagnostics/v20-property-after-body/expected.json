@@ -1,0 +1,47 @@
+{
+  "description": "A property line after the body started: V20; skipped.",
+  "mvp": true,
+  "spec": [
+    "§5.8",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "title": "Song"
+    },
+    "sections": [
+      {
+        "type": "Verse",
+        "label": null,
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V20",
+      "severity": "error",
+      "line": 5,
+      "column": 1
+    }
+  ]
+}

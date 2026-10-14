@@ -1,0 +1,277 @@
+{
+  "description": "Core section names match case-insensitively with aliases; labels; quoted names; custom and empty sections.",
+  "mvp": true,
+  "spec": [
+    "§6.2",
+    "§6.3",
+    "§6.5",
+    "§11"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": "Intro",
+        "label": null,
+        "core": true,
+        "raw": "intro",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Verse",
+        "label": "1",
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Verse",
+        "label": "2",
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Verse",
+        "label": "A",
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "PreChorus",
+        "label": null,
+        "core": true,
+        "raw": "Pre-Chorus",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "F",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "F"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "PreChorus",
+        "label": null,
+        "core": true,
+        "raw": "Pre Chorus",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "F",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "F"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Chorus",
+        "label": null,
+        "core": true,
+        "raw": "CHORUS",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Interlude",
+        "label": null,
+        "core": false,
+        "raw": "Interlude",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "A",
+                "accidental": null,
+                "quality": "m",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Am"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Guitar Solo",
+        "label": null,
+        "core": false,
+        "raw": "Guitar Solo",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "A",
+                "accidental": null,
+                "quality": "m",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Am"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Solo",
+        "label": null,
+        "core": true,
+        "raw": "Instrumental",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Outro",
+        "label": null,
+        "core": true,
+        "raw": "Ending",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Tag",
+        "label": null,
+        "core": false,
+        "raw": "Tag",
+        "elements": []
+      }
+    ]
+  },
+  "diagnostics": []
+}

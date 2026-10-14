@@ -1,0 +1,66 @@
+{
+  "description": "Navigation marker lines: V15; skipped.",
+  "mvp": true,
+  "spec": [
+    "§14",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": "Verse",
+        "label": null,
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V15",
+      "severity": "warning",
+      "line": 2,
+      "column": 1
+    },
+    {
+      "code": "V15",
+      "severity": "warning",
+      "line": 4,
+      "column": 1
+    }
+  ]
+}
