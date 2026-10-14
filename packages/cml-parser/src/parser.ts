@@ -116,7 +116,8 @@ class Parser {
   private readonly diagnostics = new DiagnosticBag();
   private readonly metadata: Record<string, string | number> = {};
   private readonly sections: Section[] = [];
-  private keySpelling: "key" | "scale" | null = null;
+  /** Latest value seen under each spelling of the key (§5.4.1), for V16. */
+  private readonly keyValues: { key?: string; scale?: string } = {};
   private current: Section | null = null;
   private repeat: OpenRepeat | null = null;
   private bodyStarted = false;
@@ -219,10 +220,12 @@ class Parser {
     let key = rawKey.toLowerCase();
     if (!KNOWN_KEYS.has(key)) this.report("V10", column, `Unknown metadata key "${rawKey}"; preserved.`);
     if (key === "key" || key === "scale") {
-      if (this.keySpelling && this.keySpelling !== key && this.metadata["key"] !== value) {
-        this.report("V16", column, `"key" and "scale" have different values ("${String(this.metadata["key"])}" and "${value}").`);
+      const other = key === "key" ? "scale" : "key";
+      const otherValue = this.keyValues[other];
+      if (otherValue !== undefined && otherValue !== value) {
+        this.report("V16", column, `"key" and "scale" have different values ("${otherValue}" and "${value}").`);
       }
-      this.keySpelling = key;
+      this.keyValues[key] = value;
       key = "key";
     }
     const stored = NUMERIC_KEYS.has(key) && /^\d+$/.test(value) ? Number(value) : value;
