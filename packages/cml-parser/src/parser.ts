@@ -71,7 +71,7 @@ function readQuoted(chars: string[], i: number, end: number): { value: string; n
 }
 
 /** Index just past the line's content: a `//` comment (§15) and trailing whitespace are removed. */
-function contentEnd(chars: string[], start: number): number {
+function contentEnd(chars: string[], start: number, quoteAware: boolean): number {
   let end = chars.length;
   let inQuote = false;
   for (let i = start; i < chars.length; i++) {
@@ -79,7 +79,7 @@ function contentEnd(chars: string[], start: number): number {
     if (inQuote) {
       if (c === "\\" && chars[i + 1] === '"') i++;
       else if (c === '"') inQuote = false;
-    } else if (c === '"') {
+    } else if (quoteAware && c === '"') {
       inQuote = true;
     } else if (c === "/" && chars[i + 1] === "/" && (i === start || isSpace(chars[i - 1]))) {
       end = i;
@@ -151,7 +151,8 @@ class Parser {
     // Lyric lines are outside the parser MVP and are ignored without a diagnostic.
     if (chars[start] === ">") return;
 
-    const end = contentEnd(chars, start);
+    const quoteAware = chars[start] !== "|" && matchBar(chars, start, chars.length) !== ":||";
+    const end = contentEnd(chars, start, quoteAware);
     let tokenEnd = start;
     while (tokenEnd < end && !isSpace(chars[tokenEnd])) tokenEnd++;
     const firstToken = chars.slice(start, tokenEnd).join("");
@@ -219,6 +220,10 @@ class Parser {
   private setMetadata(rawKey: string, value: string, column: number): void {
     let key = rawKey.toLowerCase();
     if (!KNOWN_KEYS.has(key)) this.report("V10", column, `Unknown metadata key "${rawKey}"; preserved.`);
+    if (key === "tempo" && (!/^\d+$/.test(value) || Number(value) < 1 || Number(value) > 999)) {
+      this.report("V25", column, "Tempo must be an integer between 1 and 999 BPM; property dropped.");
+      return;
+    }
     if (key === "key" || key === "scale") {
       const other = key === "key" ? "scale" : "key";
       const otherValue = this.keyValues[other];

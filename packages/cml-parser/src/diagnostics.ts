@@ -21,6 +21,7 @@ export const SEVERITY = {
   V21: "warning",
   V22: "warning",
   V23: "error",
+  V25: "error",
 } as const satisfies Record<string, Severity>;
 
 export type Code = keyof typeof SEVERITY;

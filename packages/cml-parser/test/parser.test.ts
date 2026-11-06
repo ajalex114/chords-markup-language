@@ -56,6 +56,43 @@ describe("diagnostic messages", () => {
   });
 });
 
+describe("tempo metadata", () => {
+  it.each(["1", "120", "999", '"120"'])("accepts tempo %s as a number", (value) => {
+    const { ast, diagnostics } = parse(`tempo ${value}`);
+    expect(diagnostics).toEqual([]);
+    expect(ast.metadata.tempo).toBe(Number(value.replaceAll('"', "")));
+  });
+
+  it.each(["0", "1000", "99999999999999999999", "-1", "1.5", "1e2", "fast", '""'])(
+    "rejects invalid tempo %s without storing it",
+    (value) => {
+      const { ast, diagnostics } = parse(`tempo ${value}`);
+      expect(ast.metadata).toEqual({});
+      expect(diagnostics).toEqual([
+        expect.objectContaining({ code: "V25", severity: "error", line: 1, column: 1 }),
+      ]);
+    },
+  );
+});
+
+describe("comments", () => {
+  it.each(['"x', '"G"'])("ignores trailing comments after invalid chord %s", (token) => {
+    const { diagnostics } = parse(`| C | ${token} | // play softly`);
+    expect(diagnostics).toEqual([
+      expect.objectContaining({ code: "V6", line: 1, column: 7 }),
+    ]);
+  });
+
+  it("preserves comment markers inside quoted properties and section names", () => {
+    const { ast, diagnostics } = parse(
+      'title "Hello // World" // title comment\nsection "Verse // One" // section comment\n| C | // play softly',
+    );
+    expect(diagnostics).toEqual([]);
+    expect(ast.metadata.title).toBe("Hello // World");
+    expect(ast.sections[0]).toMatchObject({ type: "Verse // One", raw: "Verse // One" });
+  });
+});
+
 describe("parseChordToken", () => {
   it("binds the accidental before the quality and splits the slash bass", () => {
     expect(parseChordToken("Bbmaj7/F").chord).toMatchObject({

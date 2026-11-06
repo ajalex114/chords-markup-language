@@ -25,6 +25,7 @@
     { "code": "V21", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§4.6.1", "title": "Reserved sigil",                                   "recovery": "The line or token is skipped." },
     { "code": "V22", "severity": "warning", "status": "active",   "mvp": true,  "spec": "§5.2",   "title": "Unquoted property value contains spaces",          "recovery": "The value is the rest of the line, trimmed." },
     { "code": "V23", "severity": "error",   "status": "active",   "mvp": true,  "spec": "§5.2",   "title": "Malformed property or section line",               "recovery": "Unclosed quote or missing value: line dropped. Extra section tokens: section starts with name and label." },
-    { "code": "V24", "severity": "error",   "status": "active",   "mvp": false, "spec": "§12.6",  "title": "Lyric line with no preceding measure line",        "recovery": "The lyric is not attached. Lyrics are outside the parser MVP." }
+    { "code": "V24", "severity": "error",   "status": "active",   "mvp": false, "spec": "§12.6",  "title": "Lyric line with no preceding measure line",        "recovery": "The lyric is not attached. Lyrics are outside the parser MVP." },
+    { "code": "V25", "severity": "error",   "status": "active",   "mvp": true,  "spec": "§5.3",   "title": "Tempo outside the integer range 1-999 BPM",         "recovery": "Reported at the property key. The property is dropped; any earlier valid tempo is retained." }
   ]
 }

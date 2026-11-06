@@ -13,7 +13,10 @@
         "cmlVersion": { "const": "0.1" },
         "metadata": {
           "type": "object",
-          "description": "Lowercased keys. 'scale' is stored as 'key'. tempo and capo are numbers when all digits; everything else is a string.",
+          "description": "Lowercased keys. 'scale' is stored as 'key'. tempo is an integer from 1 to 999; invalid tempo properties are dropped. capo is a number when all digits; everything else is a string.",
+          "properties": {
+            "tempo": { "type": "integer", "minimum": 1, "maximum": 999 }
+          },
           "propertyNames": { "pattern": "^[a-z_][a-z0-9_-]*$" },
           "additionalProperties": { "type": ["string", "integer"] }
         },

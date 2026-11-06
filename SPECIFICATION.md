@@ -360,11 +360,18 @@ metadata.
 | `album`          | string                | `album "Hymns Vol. 1"`  | Source album/collection. |
 | `key`            | key token             | `key G`                 | Tonal key; see 5.4. |
 | `scale`          | key token             | `scale G`               | Synonym for `key`; see 5.4. |
-| `tempo`          | integer (BPM)         | `tempo 72`              | Beats per minute. |
+| `tempo`          | integer 1-999 (BPM)   | `tempo 72`              | Beats per minute, inclusive range. |
 | `time_signature` | ratio token           | `time_signature 4/4`    | Default meter; see 5.5. |
 | `capo`           | integer ≥ 0           | `capo 2`                | Guitar capo fret. |
 | `copyright`      | string                | `copyright "Public Domain"` | Rights statement. |
 | `version`        | string                | `version "0.1"`         | Targeted CML spec version. |
+
+The `tempo` value, after removing any surrounding quotes, **MUST** contain
+only ASCII digits and represent an integer from 1 to 999 BPM inclusive.
+An invalid value produces error V25 at the property key, and the property is
+dropped. If an earlier valid `tempo` exists, it is retained. Valid values
+are stored as numbers in the AST; processors **MUST NOT** round or clamp
+invalid values.
 
 ### 5.4 The `key` Value
 
@@ -1690,6 +1697,7 @@ is classified as an **error** (invalid document; processing MAY stop) or a
 | V22 | Unquoted property value containing spaces, e.g. `title Amazing Grace` | **warning** | Value is the rest of the line, trimmed (§5.2). |
 | V23 | Malformed property or section line: unclosed quote, key with no value, or extra tokens after a section label | **error** | Unclosed quote or missing value: the line is dropped. Extra section tokens: the section still starts with its name and label (§5.2, §6.2). |
 | V24 | Lyric line with no preceding measure line in the section | **error** | The lyric is not attached to the AST (§12.6). |
+| V25 | Tempo is not an integer from 1 to 999 BPM | **error** | The property is dropped; any earlier valid tempo is retained (§5.3). |
 
 ### 18.1 Error Reporting
 

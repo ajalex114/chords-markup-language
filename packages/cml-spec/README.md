@@ -10,7 +10,7 @@ CML v0.1. It contains no parser code. Parsers (such as
 | `schema/ast.schema.json` | JSON Schema for the canonical AST (§17). |
 | `schema/expected.schema.json` | JSON Schema for a fixture's `expected.json`. |
 | `types/ast.d.ts` | TypeScript types for the AST and diagnostics. |
-| `diagnostics/diagnostics.json` | Diagnostic catalogue V1–V24: severity, recovery, MVP flag. |
+| `diagnostics/diagnostics.json` | Diagnostic catalogue V1–V25: severity, recovery, MVP flag. |
 | `fixtures/valid/*` | Documents that must parse with no diagnostics. |
 | `fixtures/diagnostics/*` | Documents that must produce specific diagnostics. |
 
@@ -54,8 +54,11 @@ produces a diagnostic.
 - Keys are lowercased, and `scale` is stored as `key`.
 - For duplicate keys the later value wins. Different `key`/`scale` values give
   V16 on the later line.
-- `tempo` and `capo` are JSON numbers when the value is all digits. Every other
-  value is a string, including unknown keys (V10).
+- `tempo` must contain only ASCII digits and represent 1-999 BPM inclusive.
+  Valid values are JSON numbers. Otherwise, V25 points at the property key
+  and the property is dropped, retaining any earlier valid tempo.
+- `capo` is a JSON number when the value is all digits. Every other value is
+  a string, including unknown keys (V10).
 - In quoted values `\"` becomes `"`.
 - V22 and V23 apply only before the body starts. After that any property line
   is V20.
