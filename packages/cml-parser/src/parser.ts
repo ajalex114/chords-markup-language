@@ -48,7 +48,10 @@ function skipSpaces(chars: string[], i: number, end: number): number {
 
 function matchBar(chars: string[], i: number, end: number): Bar | null {
   for (const bar of BARS) {
-    if (i + bar.length <= end && chars.slice(i, i + bar.length).join("") === bar) return bar;
+    if (i + bar.length > end) continue;
+    let k = 0;
+    while (k < bar.length && chars[i + k] === bar[k]) k++;
+    if (k === bar.length) return bar;
   }
   return null;
 }
