@@ -114,7 +114,8 @@ function tokenize(chars: string[], start: number, end: number): Token[] {
 
 class Parser {
   private readonly diagnostics = new DiagnosticBag();
-  private readonly metadata: Record<string, string | number> = {};
+  // A null prototype keeps metadata a pure dictionary: no inherited keys, and "__proto__" is ordinary data.
+  private readonly metadata: Record<string, string | number> = Object.create(null);
   private readonly sections: Section[] = [];
   /** Latest value seen under each spelling of the key (§5.4.1), for V16. */
   private readonly keyValues: { key?: string; scale?: string } = {};
@@ -234,8 +235,7 @@ class Parser {
       key = "key";
     }
     const stored = NUMERIC_KEYS.has(key) && /^\d+$/.test(value) ? Number(value) : value;
-    // defineProperty keeps keys such as "__proto__" as ordinary data.
-    Object.defineProperty(this.metadata, key, { value: stored, enumerable: true, writable: true, configurable: true });
+    this.metadata[key] = stored;
   }
 
   // ------------------------------------------------------------------ sections

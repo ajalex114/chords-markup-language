@@ -56,6 +56,15 @@ describe("diagnostic messages", () => {
   });
 });
 
+describe("metadata", () => {
+  it("does not expose inherited object properties", () => {
+    const { metadata } = parse("title Example").ast;
+    expect(metadata["title"]).toBe("Example");
+    expect(metadata["constructor"]).toBeUndefined();
+    expect(metadata["toString"]).toBeUndefined();
+  });
+});
+
 describe("tempo metadata", () => {
   it.each(["1", "120", "999", '"120"'])("accepts tempo %s as a number", (value) => {
     const { ast, diagnostics } = parse(`tempo ${value}`);
