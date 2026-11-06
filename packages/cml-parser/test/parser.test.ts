@@ -41,10 +41,15 @@ describe("spans", () => {
   });
 
   it("counts columns in code points", () => {
-    const { ast } = parse("| 😀C |");
-    expect(ast.sections[0]!.elements).toHaveLength(1);
-    const { diagnostics } = parse('title "😀" x\n');
-    expect(diagnostics[0]).toMatchObject({ code: "V23", column: 11 });
+    const { ast, diagnostics } = parse("| 😀C | x |");
+    expect(ast.sections[0]!.elements).toHaveLength(2);
+    // The emoji is one code point but two UTF-16 units, so "x" is column 8, not 9.
+    expect(diagnostics.map((d) => [d.code, d.column])).toEqual([
+      ["V6", 3],
+      ["V6", 8],
+    ]);
+    const { diagnostics: titleDiagnostics } = parse('title "😀" x\n');
+    expect(titleDiagnostics[0]).toMatchObject({ code: "V23", column: 11 });
   });
 });
 
@@ -62,6 +67,12 @@ describe("metadata", () => {
     expect(metadata["title"]).toBe("Example");
     expect(metadata["constructor"]).toBeUndefined();
     expect(metadata["toString"]).toBeUndefined();
+  });
+
+  it("does not treat __proto__ metadata keys specially", () => {
+    const { ast } = parse("__proto__ polluted\n");
+    expect(Object.keys(ast.metadata)).toEqual(["__proto__"]);
+    expect(({} as Record<string, unknown>)["polluted"]).toBeUndefined();
   });
 });
 
@@ -110,11 +121,5 @@ describe("parseChordToken", () => {
       quality: "maj7",
       bass: { root: "F", accidental: null },
     });
-  });
-
-  it("does not treat __proto__ metadata keys specially", () => {
-    const { ast } = parse("__proto__ polluted\n");
-    expect(Object.keys(ast.metadata)).toEqual(["__proto__"]);
-    expect(({} as Record<string, unknown>)["polluted"]).toBeUndefined();
   });
 });
