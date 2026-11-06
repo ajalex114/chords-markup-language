@@ -1,0 +1,77 @@
+{
+  "description": "A quality that is only digits in parentheses: V19; kept as quality, not a duration.",
+  "mvp": true,
+  "spec": [
+    "§8.4.1",
+    "§13",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "(2)",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C(2)"
+              },
+              {
+                "kind": "chord",
+                "root": "F",
+                "accidental": null,
+                "quality": "(2)",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "F(2)"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "7(9)",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C7(9)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V19",
+      "severity": "warning",
+      "line": 1,
+      "column": 3
+    },
+    {
+      "code": "V19",
+      "severity": "warning",
+      "line": 1,
+      "column": 8
+    }
+  ]
+}

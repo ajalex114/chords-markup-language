@@ -1,0 +1,47 @@
+{
+  "description": "key and scale agree, then scale is repeated with a different value: V16 on the line that introduces the conflict; the later value wins.",
+  "mvp": true,
+  "spec": [
+    "§5.4.1",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "key": "D"
+    },
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V16",
+      "severity": "error",
+      "line": 3,
+      "column": 1
+    }
+  ]
+}

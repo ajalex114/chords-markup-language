@@ -1,0 +1,202 @@
+{
+  "description": "Common qualities are kept verbatim.",
+  "mvp": true,
+  "spec": [
+    "§8.4"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "7",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C7"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "maj7",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Cmaj7"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "sus4",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Csus4"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "sus2",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Csus2"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "add9",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Cadd9"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "m7b5",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Cm7b5"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "7(b9)",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C7(b9)"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "dim7",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Cdim7"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "°",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C°"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "ø7",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Cø7"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "+",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C+"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "13",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C13"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

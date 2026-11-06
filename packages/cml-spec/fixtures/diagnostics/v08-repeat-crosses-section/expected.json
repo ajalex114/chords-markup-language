@@ -1,0 +1,96 @@
+{
+  "description": "A repeat open at a section header: V8 at the ||:, closed there; the later :|| is V3.",
+  "mvp": true,
+  "spec": [
+    "§9.3",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": "Verse",
+        "label": null,
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "repeat",
+            "count": 2,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "C",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "C"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "F",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "F"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          }
+        ]
+      },
+      {
+        "type": "Chorus",
+        "label": null,
+        "core": true,
+        "raw": "Chorus",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V8",
+      "severity": "error",
+      "line": 2,
+      "column": 1
+    },
+    {
+      "code": "V3",
+      "severity": "error",
+      "line": 5,
+      "column": 5
+    }
+  ]
+}

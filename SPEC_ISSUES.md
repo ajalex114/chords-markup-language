@@ -26,6 +26,9 @@ a parser diagnostic, **P3** documentation cleanup.
 | 14 | Stale Option C wording in §12.4 | P3 | resolved |
 | 15 | Validation table count (V1–V21 now) | P3 | resolved |
 | 16 | Example gaps and bad `examples/18` | P3 | resolved |
+| 17 | Malformed property/section lines have no code | P2 | resolved |
+| 18 | Orphan lyric line error has no code | P3 | resolved |
+| 19 | V11 "unknown quality" contradicts §8.4 | P2 | resolved |
 
 ## Details
 
@@ -142,3 +145,22 @@ V15 reflects #7, and V13 is marked reserved. `HANDOFF.md` is local-only and stal
 **Follow-up:** these are illustrative examples, not conformance fixtures. The
 `cml-spec` package should add expected-AST/diagnostic files per example.
 `03-repeats.cml` still uses alternate endings, which are outside the MVP.
+
+### 17. Malformed property/section lines (P2) — resolved
+Found while writing conformance fixtures.
+**Decision:** V22 (warning): unquoted value with spaces; value is the rest of
+the line, trimmed. V23 (error): unclosed quote or missing value (line dropped),
+or extra tokens after a section label (section still starts). Trailing
+whitespace is never a diagnostic.
+**Done:** §5.2, §6.2, §18 table.
+
+### 18. Orphan lyric line (P3) — resolved
+§12.6 required an error but had no code.
+**Decision:** error V24; the lyric is not attached to the AST.
+**Done:** §12.6 rule 1, §18 table.
+
+### 19. V11 meaning (P2) — resolved
+**Decision:** V11 = malformed quality (unbalanced parentheses or characters
+outside the §8.4 set), warning, kept verbatim. Unfamiliar but well-formed
+qualities are not reported.
+**Done:** §18 table.

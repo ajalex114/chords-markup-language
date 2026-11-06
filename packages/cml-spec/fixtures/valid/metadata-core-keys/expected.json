@@ -1,0 +1,49 @@
+{
+  "description": "All core metadata keys; keys are lowercased, quotes unescaped, tempo and capo are numbers.",
+  "mvp": true,
+  "spec": [
+    "§5.2",
+    "§5.3"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "title": "Amazing Grace",
+      "artist": "Traditional",
+      "composer": "John Newton",
+      "album": "Hymns \"Vol. 1\"",
+      "key": "G",
+      "tempo": 72,
+      "time_signature": "3/4",
+      "capo": 2,
+      "copyright": "Public Domain",
+      "version": "0.1"
+    },
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

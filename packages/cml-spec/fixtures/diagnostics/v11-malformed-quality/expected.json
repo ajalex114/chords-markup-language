@@ -1,0 +1,103 @@
+{
+  "description": "Unbalanced parentheses and characters outside the quality set: V11; kept verbatim.",
+  "mvp": true,
+  "spec": [
+    "§8.4",
+    "§8.4.1",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "7(b9",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C7(b9"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "maj7)",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Cmaj7)"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": ".",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C."
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "7(b9)",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C7(b9)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V11",
+      "severity": "warning",
+      "line": 1,
+      "column": 3
+    },
+    {
+      "code": "V11",
+      "severity": "warning",
+      "line": 1,
+      "column": 11
+    },
+    {
+      "code": "V11",
+      "severity": "warning",
+      "line": 1,
+      "column": 20
+    }
+  ]
+}

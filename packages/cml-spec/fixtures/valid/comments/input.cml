@@ -1,0 +1,8 @@
+// header comment
+title "A // B"   // trailing comment on metadata
+key C
+
+section Verse   // trailing comment on a section header
+   // indented comment
+| F#m | C7#9 |   // # is never a comment
+||: C | G :|| x2 // after a repeat count

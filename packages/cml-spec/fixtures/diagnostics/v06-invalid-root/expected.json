@@ -1,0 +1,100 @@
+{
+  "description": "Invalid roots and bass notes: V6 at the token; token dropped, measure kept.",
+  "mvp": true,
+  "spec": [
+    "§8.2",
+    "§8.5",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": []
+          },
+          {
+            "kind": "measure",
+            "chords": []
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "D",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "D"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": []
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "A",
+                "accidental": null,
+                "quality": "m",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Am"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V6",
+      "severity": "error",
+      "line": 1,
+      "column": 7
+    },
+    {
+      "code": "V6",
+      "severity": "error",
+      "line": 1,
+      "column": 11
+    },
+    {
+      "code": "V6",
+      "severity": "error",
+      "line": 2,
+      "column": 3
+    }
+  ]
+}

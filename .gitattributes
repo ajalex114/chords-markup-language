@@ -1,0 +1,2 @@
+# Conformance inputs are byte-exact (line endings and trailing whitespace matter).
+packages/cml-spec/fixtures/**/*.cml -text

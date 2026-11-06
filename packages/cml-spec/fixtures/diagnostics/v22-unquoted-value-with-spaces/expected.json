@@ -1,0 +1,54 @@
+{
+  "description": "Unquoted values with spaces: V22 at the value; value is the rest of the line, trimmed.",
+  "mvp": true,
+  "spec": [
+    "§5.2",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "title": "Amazing Grace",
+      "artist": "John   Newton"
+    },
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V22",
+      "severity": "warning",
+      "line": 1,
+      "column": 7
+    },
+    {
+      "code": "V22",
+      "severity": "warning",
+      "line": 2,
+      "column": 9
+    }
+  ]
+}

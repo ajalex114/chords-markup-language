@@ -335,6 +335,14 @@ A metadata property is a line of the form:
 One property per line. A property line **MUST NOT** begin with a bar line `|`
 (which would make it a measure line).
 
+Malformed property lines (§18):
+
+- An unquoted value containing spaces (`title Amazing Grace`) produces warning
+  V22; the value is the rest of the line, trimmed (`Amazing Grace`).
+- An unclosed quote (`title "Amazing Grace`) or a key with no value (`title`)
+  produces error V23, and the property is dropped.
+- Trailing whitespace is always ignored and never produces a diagnostic.
+
 `section` is a **reserved word** and **MUST NOT** be used as a metadata key. A
 line whose first token is `section` (case-insensitive) is always a section
 header (§6.2), never a property line.
@@ -352,11 +360,18 @@ metadata.
 | `album`          | string                | `album "Hymns Vol. 1"`  | Source album/collection. |
 | `key`            | key token             | `key G`                 | Tonal key; see 5.4. |
 | `scale`          | key token             | `scale G`               | Synonym for `key`; see 5.4. |
-| `tempo`          | integer (BPM)         | `tempo 72`              | Beats per minute. |
+| `tempo`          | integer 1-999 (BPM)   | `tempo 72`              | Beats per minute, inclusive range. |
 | `time_signature` | ratio token           | `time_signature 4/4`    | Default meter; see 5.5. |
 | `capo`           | integer ≥ 0           | `capo 2`                | Guitar capo fret. |
 | `copyright`      | string                | `copyright "Public Domain"` | Rights statement. |
 | `version`        | string                | `version "0.1"`         | Targeted CML spec version. |
+
+The `tempo` value, after removing any surrounding quotes, **MUST** contain
+only ASCII digits and represent an integer from 1 to 999 BPM inclusive.
+An invalid value produces error V25 at the property key, and the property is
+dropped. If an earlier valid `tempo` exists, it is retained. Valid values
+are stored as numbers in the AST; processors **MUST NOT** round or clamp
+invalid values.
 
 ### 5.4 The `key` Value
 
@@ -454,6 +469,11 @@ section "Guitar Solo"
 ```
 
 A section declaration **MUST** appear on its own line.
+
+A section header with an unclosed quote (`section "Verse 1`) is error V23 and is
+dropped; following lines stay in the previous section. Extra tokens after the
+label (`section Verse 1 extra`) are error V23; the section still starts, using
+its name and label.
 
 ### 6.3 Optional Labels and Numbering
 
@@ -1066,7 +1086,8 @@ Rules for the canonical form:
 
 1. A lyric line begins with `>` (optionally preceded by spaces) and applies to the
    nearest preceding measure line in the same section. A `>` line with no
-   preceding measure line **MUST** be reported as an error.
+   preceding measure line **MUST** be reported as error V24, and is not attached
+   to the AST.
 2. Every lyric line needs its own `>`. Consecutive `>` lines stack under the same
    measure line, for example for multiple verses.
 3. If the text after `>` contains a `|`, it is a **cell line**. The *k*-th cell
@@ -1156,8 +1177,9 @@ v0.1, and the delimiter for durations is not yet decided (see §8.4.1):
 - Dotted/relative tokens: `C(.)`, `C(..)` — tool-defined.
 
 In v0.1 these tokens are ordinary chord tokens whose quality is the
-parenthesized text; no "experimental feature" diagnostic is emitted (V19 applies
-only to digits-only forms such as `C(2)`).
+parenthesized text; no "experimental feature" diagnostic is emitted. (V19
+applies only to digits-only forms such as `C(2)`, and forms containing `.`
+produce V11 because `.` is not a quality character.)
 
 ### 13.6 Examples
 
@@ -1661,7 +1683,7 @@ is classified as an **error** (invalid document; processing MAY stop) or a
 | V8 | Repeat group spanning a `section` boundary | **error** | Repeats MUST be section-local. |
 | V9 | Nested repeat groups | **error** | Reserved; not allowed in v0.1. |
 | V10 | Unknown metadata key | **warning** | Preserve, do not fail (§5.6). |
-| V11 | Unknown chord quality string | **warning** | Preserve verbatim (§8.4). |
+| V11 | Malformed chord quality: unbalanced parentheses, or characters outside the §8.4 set | **warning** | Preserve verbatim (§8.4, §8.4.1). Unfamiliar but well-formed qualities are **not** reported. |
 | V12 | Lyric cell count ≠ measure count | **warning** | Alignment mismatch (§12.6). |
 | V13 | Sum of explicit durations ≠ bar length | **warning** | Reserved; not emitted in v0.1 since durations are deferred (§13.4). |
 | V14 | Non-contiguous ending numbers (gap) | **warning** | e.g. `[1]` then `[3]`. |
@@ -1672,6 +1694,10 @@ is classified as an **error** (invalid document; processing MAY stop) or a
 | V19 | Quality is only digits in parentheses, e.g. `C(2)` | **warning** | Looks like a deferred duration; kept as quality (§8.4.1). |
 | V20 | Property line (key/value) after the first section or measure line | **error** | Metadata is header-only in v0.1; mid-song changes reserved (§5.8). |
 | V21 | Reserved sigil `@`, `!` or `*` at the start of a line or token | **warning** | Skipped; reserved for future directives (§4.6.1). |
+| V22 | Unquoted property value containing spaces, e.g. `title Amazing Grace` | **warning** | Value is the rest of the line, trimmed (§5.2). |
+| V23 | Malformed property or section line: unclosed quote, key with no value, or extra tokens after a section label | **error** | Unclosed quote or missing value: the line is dropped. Extra section tokens: the section still starts with its name and label (§5.2, §6.2). |
+| V24 | Lyric line with no preceding measure line in the section | **error** | The lyric is not attached to the AST (§12.6). |
+| V25 | Tempo is not an integer from 1 to 999 BPM | **error** | The property is dropped; any earlier valid tempo is retained (§5.3). |
 
 ### 18.1 Error Reporting
 

@@ -1,0 +1,92 @@
+{
+  "description": "Whole-line, indented, and trailing // comments; // inside a quoted string is text; # is never a comment.",
+  "mvp": true,
+  "spec": [
+    "§15"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "title": "A // B",
+      "key": "C"
+    },
+    "sections": [
+      {
+        "type": "Verse",
+        "label": null,
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "F",
+                "accidental": "#",
+                "quality": "m",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "F#m"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "7#9",
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C7#9"
+              }
+            ]
+          },
+          {
+            "kind": "repeat",
+            "count": 2,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "C",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "C"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "G",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "G"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

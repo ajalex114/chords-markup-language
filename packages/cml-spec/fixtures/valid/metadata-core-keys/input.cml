@@ -1,0 +1,12 @@
+title "Amazing Grace"
+Artist "Traditional"
+composer "John Newton"
+album "Hymns \"Vol. 1\""
+key G
+tempo 72
+time_signature 3/4
+capo 2
+copyright "Public Domain"
+version "0.1"
+
+| G |

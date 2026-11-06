@@ -1,0 +1,164 @@
+{
+  "description": "Single-line repeats with explicit, default, and capital-X counts, between plain measures.",
+  "mvp": true,
+  "spec": [
+    "§9.1",
+    "§9.2"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": "Chorus",
+        "label": null,
+        "core": true,
+        "raw": "Chorus",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "G"
+              }
+            ]
+          },
+          {
+            "kind": "repeat",
+            "count": 3,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "C",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "C"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "F",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "F"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          },
+          {
+            "kind": "repeat",
+            "count": 2,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "G",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "G"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          },
+          {
+            "kind": "repeat",
+            "count": 4,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "A",
+                    "accidental": null,
+                    "quality": "m",
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "Am"
+                  }
+                ]
+              },
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "F",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "F"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

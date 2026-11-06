@@ -1,0 +1,39 @@
+{
+  "description": "scale is stored as key; identical key and scale values are not a conflict.",
+  "mvp": true,
+  "spec": [
+    "§5.4.1"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "key": "Eb"
+    },
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "E",
+                "accidental": "b",
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "Eb"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

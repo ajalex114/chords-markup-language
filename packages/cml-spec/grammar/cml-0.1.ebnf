@@ -1,0 +1,138 @@
+(* CML v0.1 grammar, generated from SPECIFICATION.md §16.
+   Do not edit by hand: run `npm run grammar` in packages/cml-spec. *)
+
+(* ===== 16.1 Lexical Grammar ===== *)
+Newline        = "\n" | "\r\n" ;
+Space          = " " | "\t" ;
+Spaces         = Space { Space } ;
+OptSpaces      = { Space } ;
+
+Digit          = "0".."9" ;
+Integer        = Digit { Digit } ;
+
+Letter         = "A".."Z" | "a".."z" ;
+IdentStart     = Letter | "_" ;
+IdentChar      = Letter | Digit | "_" | "-" ;
+Identifier     = IdentStart { IdentChar } ;
+
+QuotedString   = '"' { StringChar } '"' ;
+StringChar     = AnyCharExceptQuoteOrNewline | '\\"' ;
+
+(* Begins at line start or after Space; not recognized inside QuotedString
+   or LyricLine. See Section 15.2. *)
+Comment        = "//" { AnyCharExceptNewline } ;
+
+(* ===== 16.2 Document Structure ===== *)
+Document       = { BlankOrComment }
+                 { MetadataLine }
+                 Body
+                 { BlankOrComment } ;
+
+BlankOrComment = OptSpaces [ Comment ] Newline ;
+
+Body           = { Section | SectionlessBlock } ;
+
+(* A leading run of measure/structure content before any `section`
+   declaration forms the implicit (unnamed) section. *)
+SectionlessBlock = Element { Element } ;
+
+(* ===== 16.3 Metadata Rules ===== *)
+MetadataLine   = OptSpaces MetaKey Spaces MetaValue OptSpaces
+                 [ Comment ] Newline ;
+
+MetaKey        = Identifier ;                     (* case-insensitive *)
+MetaValue      = QuotedString | BareValue ;
+BareValue      = BareChar { BareChar } ;
+BareChar       = ? any non-space, non-newline character except '"' ? ;
+
+(* ===== 16.4 Section Rules ===== *)
+Section        = SectionHeader { Element } ;
+
+SectionHeader  = OptSpaces "section" Spaces SectionName
+                 [ Spaces SectionLabel ] OptSpaces [ Comment ] Newline ;
+
+SectionName    = Identifier | QuotedString ;
+SectionLabel   = Integer | QuotedString | Identifier ;
+
+Element        = MeasureLine
+               | RepeatGroup
+               | LyricLine
+               | NavigationLine        (* reserved; see Section 14 *)
+               | BlankOrComment ;
+
+(* ===== 16.5 Measure Rules ===== *)
+(* Bar tokens use longest match: "||:", ":||", "||", "|" (Section 7.5.1).
+   "||:" may only open a line and ":||" may only close one (Section 9.1).
+   "||" is accepted as "|" with a warning. *)
+MeasureLine    = OptSpaces LineOpen { Measure "|" } Measure LineClose
+                 OptSpaces [ Comment ] Newline
+               | OptSpaces LineOpen { Measure "|" } Measure ":||"
+                 [ RepeatCount ] OptSpaces [ Comment ] Newline ;
+
+LineOpen       = "|" | "||:" ;
+LineClose      = "|" ;
+
+Measure        = OptSpaces [ ChordList ] OptSpaces ;
+
+ChordList      = ChordItem { Spaces ChordItem } ;
+
+ChordItem      = NoChord | Chord ;
+
+NoChord        = "N.C." | "NC" ;
+
+(* Durations are deferred in v0.1 (Section 13); parentheses belong to Quality.
+   Reserved production, not parsed in v0.1: Duration with a delimiter TBD. *)
+
+(* ===== 16.6 Chord Rules ===== *)
+(* Accidental binds first: a "#" or "b" right after Root is always the
+   Accidental, never part of Quality. See Section 8.3.1. *)
+Chord          = Root [ Accidental ] [ Quality ] [ "/" Bass ] ;
+
+Root           = "A" | "B" | "C" | "D" | "E" | "F" | "G" ;
+Accidental     = "#" | "b" ;
+
+Bass           = Root [ Accidental ] ;
+
+Quality        = QualityChar { QualityChar } ;
+QualityChar    = Letter | Digit | "+" | "-" | "#" | "b"
+               | "(" | ")" | "°" | "ø" ;
+
+(* ===== 16.7 Repeat and Ending Rules ===== *)
+(* Repeat markers are bar tokens inside MeasureLine (Section 16.5):
+     "||:" is the LineOpen of the first line of a repeat,
+     ":||" closes the last line, followed by an optional RepeatCount.
+   A RepeatGroup is the span of measures from a line opened by "||:" through
+   the line closed by ":||". It may be a single line or many, so it is paired
+   by the processor from tokens rather than defined by EBNF alone. *)
+RepeatCount    = Spaces ( "x" | "X" ) Integer ;
+
+Ending         = OptSpaces EndingMarker MeasureSeqInline ;
+EndingMarker   = "[" PassSpec "]" ;
+PassSpec       = PassItem { "," PassItem } ;
+PassItem       = Integer [ "-" Integer ] ;       (* single or range *)
+
+MeasureSeqInline = { OptSpaces [ ChordList ] OptSpaces "|" } ;
+
+(* ===== 16.8 Lyrics Rules ===== *)
+LyricLine      = OptSpaces ">" LyricText Newline ;
+LyricText      = { ? any character except newline ? } ;
+                 (* Cell lines split LyricText on "|". The text, and each
+                    cell, MUST be trimmed of leading/trailing whitespace
+                    (Section 12.6 rule 5). *)
+
+(* ===== 16.9 Navigation Rules (design sketch, not parsed in v0.1) ===== *)
+(* A v0.1 processor does not parse these (Section 14). Any line whose first
+   token begins with "%" produces warning V15 and is skipped. The productions
+   below record the intended shape only. *)
+NavigationLine = OptSpaces NavMarker [ Spaces NavName ] OptSpaces
+                 [ Comment ] Newline ;
+NavName        = Identifier ;
+NavMarker      = "%segno" | "%marker"
+               | "%coda" | "%ending"
+               | "%to-coda" | "%goto-end"
+               | "%dc" | "%goto-start"
+               | "%ds" | "%goto"
+               | "%fine" | "%end"
+               | "%dc-al-coda" | "%ds-al-coda"
+               | "%dc-al-fine" | "%ds-al-fine" ;
+(* "%dc", "%goto-start", "%fine", "%end" and the *-al-fine forms take no name. *)

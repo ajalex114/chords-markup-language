@@ -1,0 +1,11 @@
+{
+  "name": "chords-markup-language",
+  "private": true,
+  "description": "Chords Markup Language (CML): specification, conformance suite, and parser.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "npm test --workspaces --if-present"
+  }
+}

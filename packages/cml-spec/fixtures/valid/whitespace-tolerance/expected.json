@@ -1,0 +1,63 @@
+{
+  "description": "Leading indentation and trailing spaces or tabs never produce diagnostics.",
+  "mvp": true,
+  "spec": [
+    "§4",
+    "§7.4"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {
+      "key": "G",
+      "tempo": 90
+    },
+    "sections": [
+      {
+        "type": "Verse",
+        "label": null,
+        "core": true,
+        "raw": "Verse",
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          },
+          {
+            "kind": "repeat",
+            "count": 2,
+            "body": [
+              {
+                "kind": "measure",
+                "chords": [
+                  {
+                    "kind": "chord",
+                    "root": "G",
+                    "accidental": null,
+                    "quality": null,
+                    "bass": null,
+                    "duration": null,
+                    "noChord": false,
+                    "raw": "G"
+                  }
+                ]
+              }
+            ],
+            "endings": []
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

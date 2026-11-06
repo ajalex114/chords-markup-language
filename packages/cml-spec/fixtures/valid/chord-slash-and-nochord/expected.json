@@ -1,0 +1,158 @@
+{
+  "description": "Slash bass notes and the N.C. / NC no-chord markers.",
+  "mvp": true,
+  "spec": [
+    "§8.5",
+    "§8.6"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "G",
+                "accidental": null,
+                "quality": null,
+                "bass": {
+                  "root": "B",
+                  "accidental": null
+                },
+                "duration": null,
+                "noChord": false,
+                "raw": "G/B"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "D",
+                "accidental": null,
+                "quality": null,
+                "bass": {
+                  "root": "F",
+                  "accidental": "#"
+                },
+                "duration": null,
+                "noChord": false,
+                "raw": "D/F#"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "B",
+                "accidental": "b",
+                "quality": null,
+                "bass": {
+                  "root": "A",
+                  "accidental": "b"
+                },
+                "duration": null,
+                "noChord": false,
+                "raw": "Bb/Ab"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "A",
+                "accidental": null,
+                "quality": "m7",
+                "bass": {
+                  "root": "G",
+                  "accidental": null
+                },
+                "duration": null,
+                "noChord": false,
+                "raw": "Am7/G"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": null,
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": true,
+                "raw": "N.C."
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": null,
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": true,
+                "raw": "NC"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": "maj7",
+                "bass": {
+                  "root": "E",
+                  "accidental": null
+                },
+                "duration": null,
+                "noChord": false,
+                "raw": "Cmaj7/E"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": []
+}

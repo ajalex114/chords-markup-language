@@ -1,0 +1,76 @@
+{
+  "description": "Lines and chord tokens starting with @, ! or *: V21; skipped.",
+  "mvp": true,
+  "spec": [
+    "§4.6.1",
+    "§18"
+  ],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": {},
+    "sections": [
+      {
+        "type": null,
+        "label": null,
+        "core": false,
+        "raw": null,
+        "elements": [
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "C",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "C"
+              }
+            ]
+          },
+          {
+            "kind": "measure",
+            "chords": []
+          },
+          {
+            "kind": "measure",
+            "chords": [
+              {
+                "kind": "chord",
+                "root": "D",
+                "accidental": null,
+                "quality": null,
+                "bass": null,
+                "duration": null,
+                "noChord": false,
+                "raw": "D"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "V21",
+      "severity": "warning",
+      "line": 1,
+      "column": 1
+    },
+    {
+      "code": "V21",
+      "severity": "warning",
+      "line": 2,
+      "column": 7
+    },
+    {
+      "code": "V21",
+      "severity": "warning",
+      "line": 3,
+      "column": 1
+    }
+  ]
+}

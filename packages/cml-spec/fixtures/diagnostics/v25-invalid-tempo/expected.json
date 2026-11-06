@@ -1,0 +1,18 @@
+{
+  "description": "Invalid tempos produce V25 and are dropped without rounding; a later invalid tempo does not overwrite an earlier valid tempo.",
+  "mvp": true,
+  "spec": ["§5.3", "§18"],
+  "ast": {
+    "cmlVersion": "0.1",
+    "metadata": { "tempo": 120 },
+    "sections": []
+  },
+  "diagnostics": [
+    { "code": "V25", "severity": "error", "line": 1, "column": 1 },
+    { "code": "V25", "severity": "error", "line": 2, "column": 1 },
+    { "code": "V25", "severity": "error", "line": 3, "column": 1 },
+    { "code": "V25", "severity": "error", "line": 4, "column": 1 },
+    { "code": "V25", "severity": "error", "line": 5, "column": 1 },
+    { "code": "V25", "severity": "error", "line": 7, "column": 1 }
+  ]
+}
